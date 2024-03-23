@@ -1,0 +1,126 @@
+﻿@model  IEnumerable<CartProducts>
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+     <div class="container">
+         <a class="navbar-brand" href="#">
+             <img src="~/images/header-logo.png" alt=""/>
+         </a>
+         <button
+             class="navbar-toggler"
+             type="button"
+             data-toggle="collapse"
+             data-target="#navbarResponsive"
+             aria-controls="navbarResponsive"
+             aria-expanded="false"
+             aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarResponsive">
+             <ul class="navbar-nav ml-auto d-flex flex-row">
+                 <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                 <li class="nav-item active">
+                     <li class="nav-item">
+                         <a class="nav-link" asp-controller="Product" asp-action="Index">Productss</a>
+                         <span class="sr-only">(current)</span>
+                     </li>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
+                 </li>
+                 @if (!User.Identity.IsAuthenticated)
+                 {
+                     <li class="nav-item">
+                         <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                     </li>
+                 }
+                 else
+                 {
+                     <li class="nav-item">
+                         <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
+                     </li>
+                 }
+                 @if (User.Identity.IsAuthenticated)
+                 {
+                     <li class="nav-item">
+                         <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
+                     </li>
+                 }
+                 <li class="nav-item">
+                     <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                 </li>
+             </ul>
+         </div>
+     </div>
+ </nav>
+
+<section class="vh-100 mt-5 p-1">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                @foreach (var item in Model)
+                {
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="@Url.Content(item.Image)" class="img-fluid rounded-start" alt="Products 1">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="card-text">@item.Description</p>
+                                    <p class="card-text"><strong>Price: </strong>$@item.Price</p>
+                                    <p class="card-text">
+                                        <strong>Quantity: </strong>@item.SellQuantity
+                                    </p>
+                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id">Update</a>
+                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@item.Id" >DeleteAsync</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="page-navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul>
+                            <div>Price - @((double)ViewBag.WholeSelledProductPrice)$</div>
+                            @if (ViewBag.currentPage > 1)
+                            {
+                                <li>
+                                    <a asp-controller="ShoppingCart" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
+                                        <i >
+                                            <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                        </i>
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <span>@ViewBag.currentPage</span>
+                            </li>
+                            @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                            {
+                                <li>
+                                    <a asp-controller="ShoppingCart" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
+                                        <i >
+                                            <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                        </i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

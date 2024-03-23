@@ -1,0 +1,122 @@
+﻿@model CartProducts
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <title>Pixie - Products Detail</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib2/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/css/fontawesome.css">
+    <link rel="stylesheet" href="~/css/tooplate-main.css">
+    <link rel="stylesheet" href="~/css/owl.css">
+    <link rel="stylesheet" href="~/css/flex-slider.css">
+    <!--
+    Tooplate 2114 Pixie
+    https://www.tooplate.com/view/2114-pixie
+    -->
+</head>
+
+<!-- Pre Header -->
+<div id="pre-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <span>Suspendisse laoreet magna vel diam lobortis imperdiet</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="~/images/header-logo.png" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto d-flex flex-row">
+                <li class="nav-item active">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Product" asp-action="Index">Productss</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
+                </li>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<!-- Single Starts Here -->
+<div class="single-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>Update</h1>
+                </div>
+            </div>
+
+            @* photo *@
+            <div class="col-md-6">
+                <img src="@Url.Content(Model.Image)" class="img-fluid" alt="Big Photo">
+            </div>
+            @* photo *@
+           <form method="post" asp-controller="ShoppingCart" asp-action="Edit">
+               <div class="col-md-6">
+                   <div class="right-content">
+                       <h4>@Model.Name</h4>
+                       <h6>$@Model.Price</h6>
+                       <p>@Model.Description</p>
+                       <span>@Model.Quantity left on stock</span>
+                       <p>Quantity : @Model.SellQuantity</p>
+                       <input class="text" value="@Model.SellQuantity" asp-for="SellQuantity" type="number" min="1" max="@Model.Quantity"/>
+                       <button class="btn" type="submit">Save</button>
+                   </div>
+               </div>
+           </form>
+
+        </div>
+    </div>
+</div>

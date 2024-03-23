@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Product>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="~/images/header-logo.png" alt=""/>
+        </a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto d-flex flex-row">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="featured-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>Featured Items</h1>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-sm-12">
+                <form asp-controller="Admin" asp-action="Products" class="form-inline" method="post" asp-route-actionForFilter="Search">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.TextBox("filterInput", null, new { @class = "form-control", placeholder = "Search" })
+                    </div>
+                    <input type="hidden" name="currentPage" value="1"/>
+                    <input type="hidden" name="numberOfItems" value="6"/>
+                    <button type="submit" class="btn btn-primary mb-2">Search</button>
+                </form>
+            </div>
+
+            <form method="post">
+                <div class="col-md-8 col-sm-12">
+                    <div id="filters" class="button-group">
+                        <button class="btn btn-primary" type="submit" asp-controller="Admin" asp-action="Products" asp-route-actionForFilter="All Productss">
+                            All Productss
+                        </button>
+                        <button class="btn btn-primary" type="submit" asp-controller="Admin" asp-action="Products" asp-route-actionForFilter="High to Low">
+                            High to Low
+                        </button>
+                        <button class="btn btn-primary" type="submit" asp-controller="Admin" asp-action="Products" asp-route-actionForFilter="Low to Hight">
+                            Low to Hight
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="featured container no-gutter">
+    <div class="row posts">
+        @foreach (var item in Model)
+        {
+            <div id="@item.Id" class="item new col-md-4 position-relative featured-item">
+                <a asp-controller="Admin" asp-action="Products" asp-route-id="@item.Id">
+                    <div >
+                        <div class="d-flex w-100 justify-content-center align-items-center">
+                            <a asp-controller="Admin" asp-action="Update" asp-route-id="@item.Id">
+                                <img src="@Url.Content(item.Image)" alt="@item.Name"/>
+                            </a>
+                        </div>
+                        <h4>@item.Name</h4>
+                        <h6>$@item.Price</h6>
+                    </div>
+                    <a class="btn btn-secondary" asp-controller="Admin" asp-action="Update" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-secondary" asp-controller="Admin" asp-action="Delete" asp-route-id="@item.Id" asp-route-currentPage="@((int)ViewBag.currentPage)">DeleteAsync</a>
+                </a>
+            </div>
+        }
+    </div>
+    <div>
+        <a class="btn btn-secondary" asp-controller="Admin" asp-action="Add">Add Item</a>
+    </div>
+</div>
+<div class="page-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    @if (ViewBag.currentPage > 1)
+                    {
+                        <li>
+                            <a asp-controller="Admin" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
+                                <i >
+                                    <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                </i>
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <span>@ViewBag.currentPage</span>
+                    </li>
+                    @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                    {
+                        <li>
+                            <a asp-controller="Admin" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
+                                <i >
+                                    <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                </i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

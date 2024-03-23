@@ -1,0 +1,336 @@
+﻿@model ProductViewModel
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <title>Pixie - Products Detail</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib2/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/css/fontawesome.css">
+    <link rel="stylesheet" href="~/css/tooplate-main.css">
+    <link rel="stylesheet" href="~/css/owl.css">
+    <link rel="stylesheet" href="~/css/flex-slider.css">
+    <!--
+    Tooplate 2114 Pixie
+    https://www.tooplate.com/view/2114-pixie
+    -->
+</head>
+
+<body>
+
+<!-- Pre Header -->
+<div id="pre-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <span>Suspendisse laoreet magna vel diam lobortis imperdiet</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="~/images/header-logo.png" alt=""/>
+        </a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto d-flex flex-row">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                <li class="nav-item active">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Product" asp-action="Index">Productss</a>
+                        <span class="sr-only">(current)</span>
+                    </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
+                </li>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Page Content -->
+<!-- Single Starts Here -->
+<div class="single-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>Single Products</h1>
+                </div>
+            </div>
+
+            @* photo *@
+            <div class="col-md-6">
+                <img src="@Url.Content(Model.Image)" class="img-fluid" alt="Big Photo">
+            </div>
+            @* photo *@
+            <div class="col-md-6">
+                <div class="right-content">
+                    <h4>@Model.Name</h4>
+                    <h6>$@Model.Price</h6>
+                    <p>@Model.Description</p>
+                    <span>@Model.Quantity left on stock</span>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-route-id="@Model.Id" asp-controller="ShoppingCart" asp-action="AddItem">
+                            <label for="quantity">Quantity:</label>
+                            <input asp-for="SellQuantity" class="quantity-text" id="quantity" type="number" min="1" value="1" max="@Model.Quantity"/>
+                            <button type="submit" class="button">Add in Cart</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Account" asp-action="Login">
+                            <label for="quantity">Quantity:</label>
+                            <input asp-for="SellQuantity" class="quantity-text" id="quantity" type="number" min="1" value="1"/>
+                            <button type="submit" class="button">Add in Cart</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Single Page Ends Here -->
+
+
+<!-- Similar Starts Here -->
+<div class="featured-items">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>You May Also Like</h1>
+                </div>
+            </div>
+            <div class="featured container no-gutter">
+                <div class="row posts">
+                    @foreach (var item in Model.Product)
+                    {
+                        <div id="@item.Id" class="item new col-md-3 position-relative featured-item">
+                            <a asp-controller="SingleProduct" asp-action="Index" asp-route-id="@item.Id">
+                                <div>
+                                    <div class="d-flex w-100 justify-content-center align-items-center">
+                                        <img src="@Url.Content(item.Image)" alt="@item.Name"/>
+                                    </div>
+                                    <h4>@item.Name</h4>
+                                    <h6>$@item.Price</h6>
+                                </div>
+                            </a>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Account" asp-action="Login">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-dash position-absolute svg-class" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
+                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                                    </svg>
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="ShoppingCart" asp-action="AddItem" asp-route-id="@item.Id" asp-route-actionName="SingleProducts">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-dash position-absolute svg-class" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
+                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                                    </svg>
+                                </a>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="page-navigation">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul>
+                                @if (ViewBag.currentPage > 1)
+                                {
+                                    <li>
+                                        <a asp-controller="SingleProduct" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
+                                            <i >
+                                                <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                            </i>
+                                        </a>
+                                    </li>
+                                }
+                                <li>
+                                    <span>@ViewBag.currentPage</span>
+                                </li>
+                                @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                                {
+                                    <li>
+                                        <a asp-controller="SingleProduct" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
+                                            <i >
+                                                <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                            </i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Similar Ends Here -->
+
+
+<!-- Subscribe Form Starts Here -->
+<div class="subscribe-form">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>Subscribe on PIXIE now!</h1>
+                </div>
+            </div>
+            <div class="col-md-8 offset-md-2">
+                <div class="main-content">
+                    <p>Godard four dollar toast prism, authentic heirloom raw denim messenger bag gochujang put a bird on it celiac readymade vice.</p>
+                    <div class="container">
+                        <form id="subscribe" action="" method="get">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <fieldset>
+                                        <input name="email" type="text" class="form-control" id="email"
+                                               onfocus="if(this.value == 'Your Email...') { this.value = ''; }"
+                                               onBlur="if(this.value == '') { this.value = 'Your Email...';}"
+                                               value="Your Email..." required="">
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-5">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="button">Subscribe Now!</button>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Subscribe Form Ends Here -->
+
+
+<!-- Footer Starts Here -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="logo">
+                    <img src="~/images/header-logo.png" alt="">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="footer-menu">
+                    <ul>
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Help</a>
+                        </li>
+                        <li>
+                            <a href="#">Privacy Policy</a>
+                        </li>
+                        <li>
+                            <a href="#">How It Works ?</a>
+                        </li>
+                        <li>
+                            <a href="#">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer Ends Here -->
+
+
+<!-- Bootstrap core JavaScript -->
+<script src="~/lib2/jquery/jquery.min.js"></script>
+<script src="~/lib2/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Additional Scripts -->
+<script src="~/js2/js/custom.js"></script>
+<script src="~/js2/js/owl.js"></script>
+<script src="~/js2/js/isotope.js"></script>
+<script src="~/js2/js/flex-slider.js"></script>
+
+
+<script language="text/Javascript"> 
+      cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+      function clearField(t){                   //declaring the array outside of the
+      if(! cleared[t.id]){                      // function makes it static and global
+          cleared[t.id] = 1;  // you could use true and false, but that's more typing
+          t.value='';         // with more chance of typos
+          t.style.color='#fff';
+          }
+      }
+    </script>
+
+
+</body>
+
+</html>

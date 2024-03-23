@@ -1,0 +1,26 @@
+﻿@model Product
+<div class="text-center">
+    <h1 class="display-4">File Upload</h1>
+</div>
+<div class="container">
+
+    <div class="mb-3 mt-3">
+        <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="Add">
+            <div class="mb-3">
+                <label class="form-label">Upload File</label>
+                <input type="file" name="file" class="form-control"/>
+                <h4>Name</h4>
+                <input class="text" value="@Model.Name" asp-for="Name" type="text"/>
+                <h4>Description</h4>
+                <input class="text" value="@Model.Description" asp-for="Description" type="text"/>
+                <h4>Price</h4>
+                <input class="text" value="@Model.Price" asp-for="Price" type="number" min="1"/>
+                <h4>Quantity</h4>
+                <input class="text" value="@Model.Quantity" asp-for="Quantity" type="number" min="1"/>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
+</div>

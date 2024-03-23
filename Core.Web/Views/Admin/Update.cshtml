@@ -1,0 +1,129 @@
+﻿@model  Product
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <title>Pixie - Products Detail</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib2/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/css/fontawesome.css">
+    <link rel="stylesheet" href="~/css/tooplate-main.css">
+    <link rel="stylesheet" href="~/css/owl.css">
+    <link rel="stylesheet" href="~/css/flex-slider.css">
+    <!--
+    Tooplate 2114 Pixie
+    https://www.tooplate.com/view/2114-pixie
+    -->
+</head>
+
+<!-- Pre Header -->
+<div id="pre-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <span>Suspendisse laoreet magna vel diam lobortis imperdiet</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="~/images/header-logo.png" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto d-flex flex-row">
+                <li class="nav-item active">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Product" asp-action="Index">Productss</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
+                </li>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<!-- Single Starts Here -->
+<div class="single-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>Update</h1>
+                </div>
+            </div>
+
+            @* Display Image and Include Hidden Input Field for Image URL *@
+            <div class="col-md-6">
+                <img src="@Model.Image" class="img-fluid" alt="Big Photo">
+
+            </div>
+            @* photo *@
+            <div class="mb-3 mt-3">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="Update" asp-route-id="@Model.Id">
+                        <div class="mb-3">
+                            <label class="form-label">Upload File</label>
+                            <input type="file" name="file" class="form-control"/>
+                            <h4>Name</h4>
+                            <input class="text" value="@Model.Name" asp-for="Name" type="text"/>
+                            <h4>Description</h4>
+                            <input class="text" value="@Model.Description" asp-for="Description" type="text"/>
+                            <h4>Price</h4>
+                            <input class="text" value="@Model.Price" asp-for="Price" type="number" min="1"/>
+                            <h4>Quantity</h4>
+                            <input class="text" value="@Model.Quantity" asp-for="Quantity" type="number" min="1"/>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                </div>
+
+        </div>
+    </div>
+</div>
