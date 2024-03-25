@@ -1,0 +1,114 @@
+﻿@model IEnumerable<UserViewModel>
+@{
+    var roleList = ViewBag.RoleList;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px; /* Added margin for spacing between tables */
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>User Management</h2>
+
+<!-- Search form -->
+<form method="get" asp-controller="AdminUsers" asp-action="Index">
+    <input type="hidden" name="filterName" value="Search"/>
+    <input class="mb-2" type="text" name="email" placeholder="Enter search query"/>
+    <button type="submit">Search</button>
+</form>
+
+<!-- First table for displaying users -->
+<table>
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Email</td>
+            <td>@item.Role</td>
+            <td>
+                <a class="btn btn-secondary" asp-controller="AdminUsers" asp-action="Update" asp-route-email="@item.Email">Edit</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<div class="page-navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        @if (ViewBag.currentPage > 1)
+                        {
+                            <li>
+                                <a asp-controller="Product" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
+                                    <i >
+                                        <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                    </i>
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <span>@ViewBag.currentPage</span>
+                        </li>
+                        @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                        {
+                            <li>
+                                <a asp-controller="Product" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
+                                    <i >
+                                        <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                    </i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+<h2>Roles</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop to display roles -->
+    @foreach (var item in roleList)
+    {
+        <tr>
+            <td>@item</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a class="btn btn-secondary" asp-controller="AdminUsers" asp-action="Edit">Edit</a>
+</body>
+</html>

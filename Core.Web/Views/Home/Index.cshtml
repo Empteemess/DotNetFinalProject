@@ -53,15 +53,18 @@
                          <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
                      </li>
                  }
-                 @if (User.Identity.IsAuthenticated)
+                 @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
                  {
                      <li class="nav-item">
                          <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
                      </li>
                  }
-                 <li class="nav-item">
-                     <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-                 </li>
+                 @if (User.IsInRole("Admin"))
+                 {
+                     <li class="nav-item">
+                         <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                     </li>
+                 }
              </ul>
          </div>
      </div>
@@ -179,6 +182,7 @@
                                     </li>
                                 }
                             </ul>
+                            
                         </div>
                     </div>
                 </div>

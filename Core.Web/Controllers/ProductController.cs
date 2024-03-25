@@ -36,6 +36,6 @@ public class ProductController : Controller
         ViewBag.currentPage = currentPage;
         ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
 
-        return RedirectToAction(nameof(Index), new { currentPage = currentPage });
+        return View(filteredProducts);
     }
 }

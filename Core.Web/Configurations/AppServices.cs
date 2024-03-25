@@ -22,11 +22,13 @@ public static class AppServices
 
         serviceCollection.AddScoped<IAccountService, AccountService>();
 
-        serviceCollection.AddScoped<IAdminRepository<Product>, AdminRepository>();
-        serviceCollection.AddScoped<IAdminService, AdminService>();
+        serviceCollection.AddScoped<IAdminProductsRepository<Product>, AdminProductsProductsRepository>();
+        serviceCollection.AddScoped<IAdminProductsService, AdminProductsService>();
         
         serviceCollection.AddScoped<IProductRepository<Product>, ProductRepository>();
         serviceCollection.AddScoped<IProductService, ProductService>();
+        
+        serviceCollection.AddScoped<IAdminUsersService, AdminUsersService>();
         
 
         serviceCollection.AddTransient<DependencyConfiguration>();

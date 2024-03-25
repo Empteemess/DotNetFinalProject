@@ -45,15 +45,18 @@
                          <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
                      </li>
                  }
-                 @if (User.Identity.IsAuthenticated)
+                 @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
                  {
                      <li class="nav-item">
                          <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
                      </li>
                  }
-                 <li class="nav-item">
-                     <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-                 </li>
+                 @if (User.IsInRole("Admin"))
+                 {
+                     <li class="nav-item">
+                         <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                     </li>
+                 }
              </ul>
          </div>
      </div>
@@ -79,7 +82,7 @@
                                         <strong>Quantity: </strong>@item.SellQuantity
                                     </p>
                                     <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id">Update</a>
-                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@item.Id" >DeleteAsync</a>
+                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@item.Id" >Delete</a>
                                 </div>
                             </div>
                         </div>

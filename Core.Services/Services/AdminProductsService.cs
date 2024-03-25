@@ -1,30 +1,35 @@
-﻿using FinalProject.Interfaces;
+﻿using System.Security.Claims;
+using FinalProject.Configurations;
+using FinalProject.Interfaces;
 using FinalProject.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services.Services;
 
-public class AdminService : IAdminService
+public class AdminProductsService : IAdminProductsService
 {
-    private readonly IAdminRepository<Product> _repository;
+    private readonly IAdminProductsRepository<Product> _productsRepository;
     private readonly IWebHostEnvironment _environment;
+    private readonly DependencyConfiguration _dependencyConfiguration;
 
-    public AdminService(IAdminRepository<Product> repository, IWebHostEnvironment environment)
+    public AdminProductsService(IAdminProductsRepository<Product> productsRepository, IWebHostEnvironment environment,DependencyConfiguration dependencyConfiguration)
     {
-        _repository = repository;
+        _productsRepository = productsRepository;
         _environment = environment;
+        _dependencyConfiguration = dependencyConfiguration;
     }
 
     public Product GetProductById(int id)
     {
-        return _repository.GetProductById(id);
+        return _productsRepository.GetProductById(id);
     }
 
     public async Task UpdateEditedItem(Product model, IFormFile file)
     {
         //Remove
-        var item = _repository.GetProductById(model.Id);
+        var item = _productsRepository.GetProductById(model.Id);
         var imagePath = Path.Combine(_environment.WebRootPath, "uploadImages", Path.GetFileName(item.Image));
         File.Delete(imagePath);
 
@@ -41,7 +46,7 @@ public class AdminService : IAdminService
 
         item.Image = $"~/{filePath}";
         //Update
-        _repository.Update(item);
+        _productsRepository.Update(item);
     }
 
 
@@ -66,14 +71,14 @@ public class AdminService : IAdminService
     {
         var path = await UploadFileAsync(file);
         model.Image = $@"~/{path}";
-        _repository.Add(model);
+        _productsRepository.Add(model);
     }
 
 
     public IEnumerable<Product> FilterProductsByItsInput(int currentPage, int NumberOfItems,
         string actionForFilter, string filterInput)
     {
-        var products = _repository.GetAllProducts();
+        var products = _productsRepository.GetAllProducts();
         switch (actionForFilter)
         {
             case "High to Low":
@@ -93,10 +98,10 @@ public class AdminService : IAdminService
         var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems);
         return exactProducts;
     }
-
+    
     public bool DeleteItem(int id)
     {
-        var item = _repository.GetAllProducts().FirstOrDefault(x => x.Id == id);
+        var item = _productsRepository.GetAllProducts().FirstOrDefault(x => x.Id == id);
         if (item != null)
         {
             var imagePath = Path.Combine(_environment.WebRootPath, "uploadImages", Path.GetFileName(item.Image));
@@ -106,7 +111,7 @@ public class AdminService : IAdminService
                 File.Delete(imagePath);
             }
 
-            _repository.Delete(item);
+            _productsRepository.Delete(item);
             return true;
         }
 

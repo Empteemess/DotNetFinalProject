@@ -1,0 +1,55 @@
+﻿@model UserViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit User Role</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>User Management</h2>
+
+<form method="post" asp-controller="AdminUsers" asp-action="UpdateRole" asp-route-email="@Model.Email">
+    <table>
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@Model.Email</td>
+            <td>
+                <select asp-for="UpdateRoleName">
+                    <!-- Added name attribute to the select element -->
+                    @foreach (var item in Model.IdentityRole)
+                    {
+                        <option>@item.Name</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">Save</button> <!-- Added submit button -->
+</form>
+
+</body>
+</html>

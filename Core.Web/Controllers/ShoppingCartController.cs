@@ -1,9 +1,11 @@
 ﻿using FinalProject.Interfaces;
 using FinalProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinalProject.Controllers;
 
+[Authorize(Roles = "User")]
 public class ShoppingCartController : Controller
 {
     private readonly IShoppingService _service;

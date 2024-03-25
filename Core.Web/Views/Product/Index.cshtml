@@ -83,15 +83,18 @@
                         <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
                     </li>
                 }
-                @if (User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
                     </li>
                 }
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-                </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
@@ -124,7 +127,7 @@
             <form method="post">
                 <div class="col-md-8 col-sm-12">
                     <div id="filters" class="button-group">
-                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-aForFilter="All Productss">
+                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter="All Productss">
                             All Productss
                         </button>
                         <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter="High to Low">
