@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinalProject.Repositories;
 
-public class AdminRepository : IAdminRepository<Product>
+public class AdminProductsProductsRepository : IAdminProductsRepository<Product>
 {
     private readonly AppDbContext _context;
 
-    public AdminRepository(AppDbContext context)
+    public AdminProductsProductsRepository(AppDbContext context)
     {
         _context = context;
     }

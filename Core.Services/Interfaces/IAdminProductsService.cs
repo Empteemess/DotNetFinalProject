@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace FinalProject.Interfaces;
 
-public interface IAdminService
+public interface IAdminProductsService
 {
     Product GetProductById(int id);
     Task UpdateEditedItem(Product model, IFormFile file);

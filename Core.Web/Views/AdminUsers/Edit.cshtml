@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model UserViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit User Role</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Roles</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Role</th>
+        <th>Action</th> <!-- Added Action column header -->
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop to display roles -->
+    @foreach (var item in Model.IdentityRole)
+    {
+        <tr>
+            <td>@item</td>
+            <td> 
+                <form method="post">
+                    <button asp-controller="AdminUsers" asp-action="Delete" asp-route-role="@item.Name" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<form method="post" asp-controller="AdminUsers" asp-action="Edit">
+    
+    <input class="text" asp-for="AddRoleName" type="text"/>
+    <button type="submit">Add</button>
+</form>
+
+</body>
+</html>

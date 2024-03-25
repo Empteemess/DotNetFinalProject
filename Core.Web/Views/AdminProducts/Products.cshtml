@@ -35,7 +35,7 @@
             </div>
 
             <div class="col-md-8 col-sm-12">
-                <form asp-controller="Admin" asp-action="Products" class="form-inline" method="post" asp-route-actionForFilter="Search">
+                <form asp-controller="AdminProducts" asp-action="Products" class="form-inline" method="post" asp-route-actionForFilter="Search">
                     <div class="form-group mx-sm-3 mb-2">
                         @Html.TextBox("filterInput", null, new { @class = "form-control", placeholder = "Search" })
                     </div>
@@ -48,13 +48,13 @@
             <form method="post">
                 <div class="col-md-8 col-sm-12">
                     <div id="filters" class="button-group">
-                        <button class="btn btn-primary" type="submit" asp-controller="Admin" asp-action="Products" asp-route-actionForFilter="All Productss">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="All Productss">
                             All Productss
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="Admin" asp-action="Products" asp-route-actionForFilter="High to Low">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="High to Low">
                             High to Low
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="Admin" asp-action="Products" asp-route-actionForFilter="Low to Hight">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="Low to Hight">
                             Low to Hight
                         </button>
                     </div>
@@ -69,24 +69,24 @@
         @foreach (var item in Model)
         {
             <div id="@item.Id" class="item new col-md-4 position-relative featured-item">
-                <a asp-controller="Admin" asp-action="Products" asp-route-id="@item.Id">
+                <a asp-controller="AdminProducts" asp-action="Products" asp-route-id="@item.Id">
                     <div >
                         <div class="d-flex w-100 justify-content-center align-items-center">
-                            <a asp-controller="Admin" asp-action="Update" asp-route-id="@item.Id">
+                            <a asp-controller="AdminProducts" asp-action="Update" asp-route-id="@item.Id">
                                 <img src="@Url.Content(item.Image)" alt="@item.Name"/>
                             </a>
                         </div>
                         <h4>@item.Name</h4>
                         <h6>$@item.Price</h6>
                     </div>
-                    <a class="btn btn-secondary" asp-controller="Admin" asp-action="Update" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-secondary" asp-controller="Admin" asp-action="Delete" asp-route-id="@item.Id" asp-route-currentPage="@((int)ViewBag.currentPage)">DeleteAsync</a>
+                    <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Update" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@item.Id" asp-route-currentPage="@((int)ViewBag.currentPage)">Delete</a>
                 </a>
             </div>
         }
     </div>
     <div>
-        <a class="btn btn-secondary" asp-controller="Admin" asp-action="Add">Add Item</a>
+        <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Add">Add Item</a>
     </div>
 </div>
 <div class="page-navigation">
@@ -97,7 +97,7 @@
                     @if (ViewBag.currentPage > 1)
                     {
                         <li>
-                            <a asp-controller="Admin" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
+                            <a asp-controller="AdminProducts" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
                                 <i >
                                     <img src="~/images/LEFT.png" alt="left-cursor"/>
                                 </i>
@@ -110,7 +110,7 @@
                     @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
                     {
                         <li>
-                            <a asp-controller="Admin" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
+                            <a asp-controller="AdminProducts" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
                                 <i >
                                     <img src="~/images/RIGHT.png" alt="right-cursor"/>
                                 </i>
