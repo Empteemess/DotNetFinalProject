@@ -51,9 +51,10 @@ public class AdminProductsController : Controller
         return View(item);
     }
 
-    public IActionResult Update(Product model,IFormFile file)
+    [HttpPost]
+    public async Task<IActionResult> Update(Product model,IFormFile file)
     {
-        _productsService.UpdateEditedItem(model,file);
+        await _productsService.UpdateEditedItemAsync(model,file);
         return RedirectToAction(nameof(Products));
     }
 
@@ -74,7 +75,7 @@ public class AdminProductsController : Controller
     {
         if (file != null)
         {
-            await _productsService.AddItem(model, file);
+            await _productsService.AddItemAsync(model, file);
         }
         return RedirectToAction(nameof(Products));
     }

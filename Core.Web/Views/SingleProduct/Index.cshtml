@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
 
     <meta charset="utf-8">
@@ -68,9 +69,6 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
-                </li>
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
@@ -123,13 +121,31 @@
                     <h4>@Model.Name</h4>
                     <h6>$@Model.Price</h6>
                     <p>@Model.Description</p>
-                    <span>@Model.Quantity left on stock</span>
+                    @if (Model.Quantity != 0)
+                    {
+                        <span>@Model.Quantity left on stock</span>
+                    }
+                    else
+                    {
+                        <span>Out of stock</span>
+                    }
                     @if (User.Identity.IsAuthenticated)
                     {
                         <form asp-route-id="@Model.Id" asp-controller="ShoppingCart" asp-action="AddItem">
                             <label for="quantity">Quantity:</label>
-                            <input asp-for="SellQuantity" class="quantity-text" id="quantity" type="number" min="1" value="1" max="@Model.Quantity"/>
-                            <button type="submit" class="button">Add in Cart</button>
+                            @if (Model.Quantity != 0)
+                            {
+                                <input asp-for="SellQuantity" class="quantity-text" id="quantity" type="number" min="1" value="1" max="@Model.Quantity"/>
+                            }
+                            else
+                            {
+                                <input asp-for="SellQuantity" class="quantity-text" id="quantity" type="number" min="0" value="0" max="@Model.Quantity"/>
+                            }
+                            @if (!User.IsInRole("Admin") && Model.Quantity != 0)
+                            {
+                                <button type="submit" class="button">Add in Cart</button>
+                            }
+
                         </form>
                     }
                     else
@@ -183,12 +199,15 @@
                             }
                             else
                             {
-                                <a asp-controller="ShoppingCart" asp-action="AddItem" asp-route-id="@item.Id" asp-route-actionName="SingleProducts">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-dash position-absolute svg-class" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
-                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-                                    </svg>
-                                </a>
+                                @if (!User.IsInRole("Admin") && item.Quantity != 0)
+                                {
+                                    <a asp-controller="ShoppingCart" asp-action="AddItem" asp-route-id="@item.Id" asp-route-actionName="SingleProducts">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-dash position-absolute svg-class" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
+                                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                                        </svg>
+                                    </a>
+                                }
                             }
                         </div>
                     }

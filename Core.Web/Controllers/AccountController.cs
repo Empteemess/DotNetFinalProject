@@ -50,7 +50,7 @@ public class AccountController : Controller
             var success = await _service.RegisterAsync(model);
             if (success)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction(nameof(Login));
             }
         }
 

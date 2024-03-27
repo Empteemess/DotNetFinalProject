@@ -4,6 +4,8 @@ using FinalProject.Data;
 using FinalProject.Interfaces;
 using FinalProject.Models;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
+using MimeKit.Text;
 
 namespace Core.Services.Services;
 
@@ -16,7 +18,7 @@ public class ShoppingCartService : IShoppingService
         _dependencyConfiguration = dependencyConfiguration;
     }
 
-    private async Task<ApplicationUser> GetCurrentUser()
+    public async Task<ApplicationUser> GetCurrentUserAsync()
     {
         var personId = _dependencyConfiguration._httpContextAccessor.HttpContext.User
             .FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -26,7 +28,7 @@ public class ShoppingCartService : IShoppingService
 
     public async Task<IEnumerable<CartProducts>> GetPersonCartItemsAsync()
     {
-        var person = await GetCurrentUser();
+        var person = await GetCurrentUserAsync();
         if (person != null)
         {
             return person.CartProducts;
@@ -34,7 +36,6 @@ public class ShoppingCartService : IShoppingService
 
         return null;
     }
-
 
     public async Task AddProductsInCartAsync(int id, int sellQuantity)
     {
@@ -51,7 +52,7 @@ public class ShoppingCartService : IShoppingService
             SellQuantity = sellQuantity,
         };
 
-        var user = await GetCurrentUser();
+        var user = await GetCurrentUserAsync();
 
         if (exactItem.Quantity < sellQuantity && user.CartProducts.Any(x => x.ProductId == exactItem.Id))
         {
@@ -79,10 +80,10 @@ public class ShoppingCartService : IShoppingService
         }
     }
 
-    public async Task<double> GetSelledProductPrice()
+    public async Task<double> GetSelledProductPriceAsync()
     {
         var wholePrice = 0.0;
-        var user = await GetCurrentUser();
+        var user = await GetCurrentUserAsync();
         foreach (var item in user.CartProducts)
         {
             wholePrice += item.SellQuantity * item.Price;
@@ -91,19 +92,18 @@ public class ShoppingCartService : IShoppingService
         return wholePrice;
     }
 
-
-    public async Task<CartProducts> GetItemById(int id)
+    public async Task<CartProducts> GetItemByIdAsync(int id)
     {
-        var user = await GetCurrentUser();
+        var user = await GetCurrentUserAsync();
 
         var exactItem = user.CartProducts.FirstOrDefault(x => x.Id == id);
 
         return exactItem;
     }
 
-    public async Task<bool> UpdateEditedItem(CartProducts model)
+    public async Task<bool> UpdateEditedItemAsync(CartProducts model)
     {
-        var user = await GetCurrentUser();
+        var user = await GetCurrentUserAsync();
         var exactItem = user.CartProducts.FirstOrDefault(x => x.Id == model.Id);
         if (exactItem != null)
         {
@@ -115,9 +115,9 @@ public class ShoppingCartService : IShoppingService
         return false;
     }
 
-    public async Task<bool> DeleteItem(int id)
+    public async Task<bool> DeleteItemAsync(int id)
     {
-        var user = await GetCurrentUser();
+        var user = await GetCurrentUserAsync();
         var item = user.CartProducts.FirstOrDefault(x => x.Id == id);
         if (item != null)
         {
@@ -127,5 +127,79 @@ public class ShoppingCartService : IShoppingService
         }
 
         return false;
+    }
+
+    private async Task EmailSenderAsync(string textInput)
+    {
+        var text = textInput;
+        var user = await GetCurrentUserAsync();
+        var customerEmail = user.Email;
+        var products = user.CartProducts;
+        var purchasedItems = "";
+        var totalPrice = 0.0;
+
+        foreach (var item in products)
+        {
+            purchasedItems += $"{item.Name}:{item.Price}$\n";
+            totalPrice += item.Price;
+        }
+        var subject = "Subject: Thank You for Your Recent Purchase!";
+
+        if (textInput == "")
+        {
+            text = $@"Thank you for choosing PixieStore for your recent purchase! 
+Your order confirmation details are as follows:
+Date of Purchase: {(DateTime.Now.Day < 10 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString())}:{DateTime.Now.ToString("MM")}:{DateTime.Now.Year}
+Item(s) Purchased: 
+ {purchasedItems}
+Total Price: {totalPrice}$";
+        }
+        var email = new MimeMessage();
+        email.From.Add(new MailboxAddress("giorgi", "treiser02@gmail.com"));
+        email.To.Add(new MailboxAddress("Recipient", customerEmail));
+        email.Subject = subject;
+
+        var body = new TextPart(TextFormat.Plain)
+        {
+            Text = text
+        };
+
+        var multipart = new Multipart("mixed");
+        multipart.Add(body);
+        email.Body = multipart;
+
+        using (var smtp = new MailKit.Net.Smtp.SmtpClient())
+        {
+            smtp.Connect("smtp.gmail.com", 465, true);
+            smtp.Authenticate("treiser02@gmail.com", "njuj csjs vgie ztiv");
+
+            try
+            {
+                smtp.Send(email);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to send email: {ex.Message}");
+            }
+
+            smtp.Disconnect(true);
+        }
+    }
+
+    public async Task BuyItemAsync()
+    {
+        await EmailSenderAsync(string.Empty);
+
+        var user = await GetCurrentUserAsync();
+        var cartProducts = user.CartProducts;
+        var shopItems = _dependencyConfiguration._context.Products;
+
+        foreach (var item in cartProducts)
+        {
+            var currentItem = await shopItems.FirstOrDefaultAsync(x => x.Id == item.ProductId);
+            currentItem.Quantity -= item.SellQuantity;
+            user.CartProducts.Remove(item);
+            await _dependencyConfiguration._userManager.UpdateAsync(user);
+        }
     }
 }

@@ -22,7 +22,7 @@ public static class AppServices
 
         serviceCollection.AddScoped<IAccountService, AccountService>();
 
-        serviceCollection.AddScoped<IAdminProductsRepository<Product>, AdminProductsProductsRepository>();
+        serviceCollection.AddScoped<IAdminProductsRepository<Product>, AdminProductsRepository>();
         serviceCollection.AddScoped<IAdminProductsService, AdminProductsService>();
         
         serviceCollection.AddScoped<IProductRepository<Product>, ProductRepository>();

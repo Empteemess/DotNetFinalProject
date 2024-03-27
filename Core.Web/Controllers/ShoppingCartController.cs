@@ -24,7 +24,7 @@ public class ShoppingCartController : Controller
 
         ViewBag.currentPage = currentPage;
         ViewBag.PageNum = (int)Math.Ceiling(count / (double)numberOfItems);
-        ViewBag.WholeSelledProductPrice = await _service.GetSelledProductPrice();
+        ViewBag.WholeSelledProductPrice = await _service.GetSelledProductPriceAsync();
         return View(exactProducts);
     }
 
@@ -49,14 +49,14 @@ public class ShoppingCartController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        var item = await _service.GetItemById(id);
+        var item = await _service.GetItemByIdAsync(id);
         return View(item);
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(CartProducts model)
     {
-        var item = await _service.UpdateEditedItem(model);
+        var item = await _service.UpdateEditedItemAsync(model);
         if (item)
         {
             return RedirectToAction(nameof(Index));
@@ -67,7 +67,13 @@ public class ShoppingCartController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _service.DeleteItem(id);
+        var result = await _service.DeleteItemAsync(id);
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Buy()
+    {
+        await _service.BuyItemAsync();
+        return RedirectToAction("Index","Home");
     }
 }
