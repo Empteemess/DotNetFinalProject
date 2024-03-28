@@ -19,12 +19,6 @@ public class HomeService : IHomeService
         return exactProducts;
     }
 
-    public void SellItem(ProductViewModel viewModel,int id)
-    {
-        var product = _repository.GetProductById(id);
-        product.Quantity -= viewModel.SellQuantity;
-    }
-
     public Product ExactProduct(int id)
     {
         return _repository.GetProductById(id);
