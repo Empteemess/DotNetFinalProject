@@ -31,6 +31,9 @@ public class ShoppingCartController : Controller
     public async Task<IActionResult> AddItem(int id, int sellQuantity = 1, string actionName = "")
     {
         await _service.AddProductsInCartAsync(id, sellQuantity);
+        
+        await _service.RemoveProductQuantity(id,sellQuantity);
+        
         switch (actionName)
         {
             case "Home":

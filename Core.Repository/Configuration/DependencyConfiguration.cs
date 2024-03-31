@@ -1,5 +1,4 @@
 ﻿using FinalProject.Data;
-using FinalProject.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 

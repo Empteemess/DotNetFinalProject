@@ -46,7 +46,17 @@ public class ProductService : IProductService
         var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems);
         return exactProducts;
     }
+    public bool CheckPageNum(int currentPage,int NumberOfItems)
+    {
+        var count = ProductCount();
+        var maxPageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        if (currentPage > maxPageNum)
+        {
+            return false;
+        }
 
+        return true;
+    }
     public int ProductCount()
     {
         return _repository.GetAllProducts().Count();

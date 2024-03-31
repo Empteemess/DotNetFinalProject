@@ -78,6 +78,8 @@
                         </div>
                         <h4>@item.Name</h4>
                         <h6>$@item.Price</h6>
+                        <h6>Quantity - @item.Quantity</h6>
+                        
                     </div>
                     <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Update" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@item.Id" asp-route-currentPage="@((int)ViewBag.currentPage)">Delete</a>

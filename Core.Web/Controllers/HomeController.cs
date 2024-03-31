@@ -19,6 +19,12 @@ public class HomeController : Controller
 
     public IActionResult Index(int currentPage = 1,int NumberOfItems = 4)
     {
+        var check = _service.CheckPageNum(currentPage, NumberOfItems);
+        if (!check)
+        {
+            return RedirectToAction("Index", "Error");
+        }
+        
         var count = _service.ProductCount();
         var ProductsByNumber = _service.MapViewModelDataToDto(currentPage,NumberOfItems);
         

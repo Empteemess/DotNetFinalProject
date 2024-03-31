@@ -17,6 +17,11 @@ public class ProductController : Controller
     [HttpGet]
     public IActionResult Index(int currentPage = 1, int NumberOfItems = 6)
     {
+        var check = _service.CheckPageNum(currentPage, NumberOfItems);
+        if (!check)
+        {
+            return RedirectToAction("Index", "Error");
+        }
         var count = _service.ProductCount();
         var filteredProducts = _service.FilterProductsByItsInput(currentPage, NumberOfItems,string.Empty,string.Empty);
 

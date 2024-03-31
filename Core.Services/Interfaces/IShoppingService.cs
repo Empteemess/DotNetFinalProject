@@ -13,4 +13,5 @@ public interface IShoppingService
     Task<bool> DeleteItemAsync(int id);
     Task BuyItemAsync();
     Task<ApplicationUser> GetCurrentUserAsync();
+    Task RemoveProductQuantity(int id,int sellQuantity);
 }

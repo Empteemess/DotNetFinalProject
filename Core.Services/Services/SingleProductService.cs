@@ -5,16 +5,17 @@ namespace FinalProject.Services;
 
 public class SingleProductService : ISingleProductService
 {
-    private readonly ISingleProductRepository<Product>  _repository;
+    private readonly ISingleProductRepository<Product> _repository;
 
     public SingleProductService(ISingleProductRepository<Product> repository)
     {
         _repository = repository;
     }
-    public ProductViewModel MapViewModelToDto(int id,int currentPage, int NumberOfItems)
+
+    public ProductViewModel MapViewModelToDto(int id, int currentPage, int NumberOfItems)
     {
         var exactProduct = _repository.GetProductById(id);
-        
+
         var count = ProductCount();
         var products = _repository.GetAllProducts();
         var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems).ToList();
@@ -30,11 +31,24 @@ public class SingleProductService : ISingleProductService
             CategoryEnum = exactProduct.CategoryEnum,
             Product = exactProducts,
         };
-        
+
         return productDto;
     }
+
     public int ProductCount()
     {
         return _repository.GetAllProducts().Count();
+    }
+
+    public bool CheckProduct(int id)
+    {
+        var product = _repository.GetProductById(id);
+
+        if (product != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

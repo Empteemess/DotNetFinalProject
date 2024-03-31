@@ -26,7 +26,7 @@ public class AdminProductsService : IAdminProductsService
     {
         return _productsRepository.GetProductById(id);
     }
-
+   
     public async Task UpdateEditedItemAsync(Product model, IFormFile file)
     {
         var item = _productsRepository.GetProductById(model.Id);
