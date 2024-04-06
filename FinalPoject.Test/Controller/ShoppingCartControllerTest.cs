@@ -10,14 +10,14 @@ namespace FinalPoject.Test.Controller;
 
 public class ShoppingCartControllerTest
 {
-    private IShoppingService _service;
+    private IShoppingCartService _cartService;
     private ShoppingCartController _controller;
 
     public ShoppingCartControllerTest()
     {
-        _service = A.Fake<IShoppingService>();
+        _cartService = A.Fake<IShoppingCartService>();
 
-        _controller = new ShoppingCartController(_service);
+        _controller = new ShoppingCartController(_cartService);
     }
 
     [Test]
@@ -28,8 +28,8 @@ public class ShoppingCartControllerTest
         var numberOfItems = 4;
         var returnType = A.Fake<IEnumerable<CartProducts>>();
        
-        A.CallTo(() => _service.GetPersonCartItemsAsync()).Returns(returnType);
-        A.CallTo(() => _service.GetSelledProductPriceAsync());
+        A.CallTo(() => _cartService.GetPersonCartItemsAsync()).Returns(returnType);
+        A.CallTo(() => _cartService.GetSelledProductPriceAsync());
         //Act
 
         var result = await _controller.Index(currentPage, numberOfItems);
@@ -50,7 +50,7 @@ public class ShoppingCartControllerTest
         var id = 64;
         var sellQuantity = 19;
 
-        A.CallTo(() => _service.AddProductsInCartAsync(id, sellQuantity)).Returns(Task.CompletedTask);
+        A.CallTo(() => _cartService.AddProductsInCartAsync(id, sellQuantity)).Returns(Task.CompletedTask);
 
         //Act
         var result = await _controller.AddItem(id, sellQuantity, actionName);
@@ -79,7 +79,7 @@ public class ShoppingCartControllerTest
         //Arrange
         var id = 79;
         var returnType = A.Fake<CartProducts>();
-        A.CallTo(() => _service.GetItemByIdAsync(id)).Returns(returnType);
+        A.CallTo(() => _cartService.GetItemByIdAsync(id)).Returns(returnType);
 
         //Act
         var result = await _controller.Edit(id);
@@ -95,7 +95,7 @@ public class ShoppingCartControllerTest
         //Arrange
         var cartProducts = new CartProducts();
         var fromResult = Task.FromResult(true);
-        A.CallTo(() => _service.UpdateEditedItemAsync(cartProducts)).Returns(fromResult);
+        A.CallTo(() => _cartService.UpdateEditedItemAsync(cartProducts)).Returns(fromResult);
 
         //Act
         var result = await _controller.Edit(cartProducts);
@@ -113,7 +113,7 @@ public class ShoppingCartControllerTest
         //Arrange
         CartProducts cartProducts = null;
         var returnType = Task.FromResult(false);
-        A.CallTo(() => _service.UpdateEditedItemAsync(cartProducts)).Returns(returnType);
+        A.CallTo(() => _cartService.UpdateEditedItemAsync(cartProducts)).Returns(returnType);
 
         //Act
         var result = await _controller.Edit(cartProducts) as ViewResult;
@@ -128,7 +128,7 @@ public class ShoppingCartControllerTest
         //Arrange
         var id = 79;
         var serviceResult = Task.FromResult(true);
-        A.CallTo(() => _service.DeleteItemAsync(id)).Returns(serviceResult);
+        A.CallTo(() => _cartService.DeleteItemAsync(id)).Returns(serviceResult);
 
         //Act
 
@@ -141,18 +141,5 @@ public class ShoppingCartControllerTest
         redirectToAction.ActionName.Should().Be(nameof(ShoppingCartController.Index));
     }
 
-    [Test]
-    public async Task ShoppingCartController_Buy_ReturnSuccess()
-    {
-        //Arrange
-        A.CallTo(() => _service.BuyItemAsync()).Returns(Task.CompletedTask);
-
-        //Act
-        var result = await _controller.Buy();
-
-        //Assert
-        result.Should().BeOfType<RedirectToActionResult>();
-        var redirectToAction = result as RedirectToActionResult;
-        redirectToAction.ActionName.Should().Be(nameof(HomeController.Index));
-    }
+    
 }

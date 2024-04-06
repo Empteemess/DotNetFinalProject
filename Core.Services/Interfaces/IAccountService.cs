@@ -12,6 +12,7 @@ public interface IAccountService
    
     Task CreateRoleAsync(string roleName);
     Task RemoveRoleAsync(RoleViewModel model);
-    
-
+    Task<bool>? CheckUserAsync(string email);
+    Task<bool> PasswordUpdate(string email, string password);
+    Task<bool> CheckEmail(string email);
 }

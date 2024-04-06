@@ -19,7 +19,7 @@ public static class AppServices
         serviceCollection.AddScoped<ISingleProductService, SingleProductService>();
 
         serviceCollection.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-        serviceCollection.AddScoped<IShoppingService, ShoppingCartService>();
+        serviceCollection.AddScoped<IShoppingCartService, ShoppingCartService>();
 
         serviceCollection.AddScoped<IAccountService, AccountService>();
 

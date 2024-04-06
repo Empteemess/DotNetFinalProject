@@ -2,7 +2,7 @@
 
 namespace FinalProject.Models;
 
-public class RegisterViewModel
+public class RecoveryPasswordViewModel
 {
     [Required]
     [EmailAddress]
@@ -13,5 +13,6 @@ public class RegisterViewModel
     [Required]
     [Compare(nameof(Password),ErrorMessage = "Password Doesn't Match")]
     public string ConfirmPassword { get; set; }
+    public bool EmailCheck { get; set; }
 
 }

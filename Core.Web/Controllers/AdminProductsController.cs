@@ -9,13 +9,13 @@ namespace FinalProject.Controllers;
 public class AdminProductsController : Controller
 {
     private readonly IProductService _productService;
-    private readonly IShoppingService _shoppingService;
+    private readonly IShoppingCartService _shoppingCartService;
     private readonly IAdminProductsService _productsService;
 
-    public AdminProductsController(IProductService productService, IShoppingService shoppingService, IAdminProductsService productsService)
+    public AdminProductsController(IProductService productService, IShoppingCartService shoppingCartService, IAdminProductsService productsService)
     {
         _productService = productService;
-        _shoppingService = shoppingService;
+        _shoppingCartService = shoppingCartService;
         _productsService = productsService;
     }
     public IActionResult Products(int currentPage = 1, int NumberOfItems = 6)

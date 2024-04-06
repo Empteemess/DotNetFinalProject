@@ -108,7 +108,7 @@
                        <p>@Model.Description</p>
                        <span>@Model.Quantity left on stock</span>
                        <p>Quantity : @Model.SellQuantity</p>
-                       <input class="text" value="@Model.SellQuantity" asp-for="SellQuantity" type="number" min="1" max="@Model.Quantity"/>
+                       <input class="text" value="@Model.SellQuantity" asp-for="SellQuantity" type="number" min="1" max="@(@Model.Quantity + @Model.SellQuantity)"/>
                        <button class="btn" type="submit">Save</button>
                    </div>
                </div>

@@ -9,8 +9,8 @@ namespace FinalPoject.Test.Controller;
 
 public class ProductControllerTest
 {
-    private IProductService _productService;
-    private ProductController _productController;
+    private readonly IProductService _productService;
+    private readonly ProductController _productController;
 
     public ProductControllerTest()
     {

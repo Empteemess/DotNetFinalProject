@@ -684,6 +684,106 @@ a {
   border: none;
 }
 
+/* product/ card styles */
+.container-fluid{
+  position: relative;
+}
+.card-container {
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  border-radius: 20px;
+  padding: 50px 30px;
+  top: 50%;
+  left: 50%;
+  gap: 20px;
+  transform: translate(-50%, -50%);
+  box-shadow: 1px -1px 14px 2px rgba(0, 0, 0, 0.66);
+  z-index: 999;
+}
+.product-position{
+  flex-wrap: wrap;
+  display: flex;
+  max-width: 100%;
+  gap: 5px;
+  flex: 1;
+}
+.product-styles{
+  max-width: 45%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.card-logos {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.card-logos img {
+  max-width: 60px;
+}
+.card-info {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 15px;
+}
+input {
+  border: 1px solid rgba(255, 255, 255, 0.466);
+  border-radius: 10px;
+  background: none;
+}
+.card-num input,
+.card-num label {
+  max-width: 80%;
+  font-size: 20px;
+}
+.card-hold {
+  max-width: 80%;
+}
+.card-hold input {
+  font-size: 20px;
+}
+.exp-date {
+  font-size: 20px;
+  max-width: 80px;
+}
+.exp-date input {
+  font-size: 20px;
+}
+.ccv-code {
+  font-size: 20px;
+  max-width: 50px;
+}
+.ccv-code input {
+  font-size: 20px;
+}
+.card-hold,
+.exp-date,
+.ccv-code,
+.card-num {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.apply-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.662);
+
+  border-radius: 20px;
+  padding: 5px;
+  font-size: 16px;
+  width: 50%;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.apply-btn:hover {
+  background-color: rgba(255, 255, 255, 0.662);
+}
 /* Responsive Style */
 @media (max-width: 991px) {
   .banner {

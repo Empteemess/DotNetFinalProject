@@ -1,7 +1,9 @@
-﻿@model  IEnumerable<CartProducts>
+﻿@model  CreditCartViewModel
+@{
+    var buttonCheck = ViewBag.BuyButtonCheck;
+}
 <!DOCTYPE html>
 <html lang="en">
-
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
@@ -60,67 +62,103 @@
 </nav>
 
 <section class="vh-100 mt-5 p-1">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                @foreach (var item in Model)
-                {
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="@Url.Content(item.Image)" class="img-fluid rounded-start" alt="Products 1">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">@item.Name</h5>
-                                    <p class="card-text">@item.Description</p>
-                                    <p class="card-text"><strong>Price: </strong>$@item.Price</p>
-                                    <p class="card-text">
-                                        <strong>Quantity: </strong>@item.SellQuantity
-                                    </p>
-                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id">Update</a>
-                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </div>
+    <form method="post" asp-controller="ShoppingCart" asp-action="Index">
+        <div class="container-fluid">
+            @if (buttonCheck)
+            {
+                <div class="card-container hidden">
+                    <div class="card-logos">
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Visa_Logo.png/640px-Visa_Logo.png"
+                            alt="visa"/>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/7/72/MasterCard_early_1990s_logo.png"
+                            alt=""/>
+                    </div>
+                    <div class="card-num">
+                        <label for="card-number">Card Number</label>
+                        <input type="number" asp-for="CardNumber"/>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-hold">
+                            <label for="card-holder">Card Holder</label>
+                            <input type="text" asp-for="Name"/>
+                        </div>
+                        <div class="exp-te">
+                            <label for="exp-date">Exp. Date (MM/YYYY)</label>
+                            <input type="text" asp-for="DateTime" pattern="(0[1-9]|1[0-2])\/\d{4}" placeholder="MM/YYYY"/>
+                        </div>
+                        <div class="ccv-code">
+                            <label for="ccv">CCV</label>
+                            <input type="number" asp-for="SecurityCode" maxlength="3"/>
+                        </div>
+                    </div>
+
+                    <button class="apply-btn" type="submit">APPLY</button>
+                </div>
+            }
+        </div>
+    </form>
+
+    <div class="row ">
+        <div class="col-md-6 product-position">
+            @foreach (var item in Model.CartProducts)
+            {
+                <div class="card mb-3 product-styles">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="@Url.Content(item.Image)" class="img-fluid rounded-start" alt="Products 1">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Description</p>
+                                <p class="card-text"><strong>Price: </strong>$@item.Price</p>
+                                <p class="card-text">
+                                    <strong>Quantity: </strong>@item.SellQuantity
+                                </p>
+                                <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id">Update</a>
+                                <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             </div>
                         </div>
                     </div>
-                }
-            </div>
+                </div>
+            }
         </div>
-        <div class="col-md-6 text-right">
-            <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Buy">Buy</a>
-        </div>
-        <div class="page-navigation">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul>
-                            <div>Price - @((double)ViewBag.WholeSelledProductPrice)$</div>
-                            @if (ViewBag.currentPage > 1)
-                            {
-                                <li>
-                                    <a asp-controller="ShoppingCart" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
-                                        <i >
-                                            <img src="~/images/LEFT.png" alt="left-cursor"/>
-                                        </i>
-                                    </a>
-                                </li>
-                            }
+    </div>
+    <div class="col-md-6 text-right">
+        <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Index" asp-route-buyButtonCheck="true">Buy</a>
+    </div>
+    <div class="page-navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <div>Price - @((double)ViewBag.WholeSelledProductPrice)$</div>
+                        @if (ViewBag.currentPage > 1)
+                        {
                             <li>
-                                <span>@ViewBag.currentPage</span>
+                                <a asp-controller="ShoppingCart" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
+                                    <i >
+                                        <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                    </i>
+                                </a>
                             </li>
-                            @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
-                            {
-                                <li>
-                                    <a asp-controller="ShoppingCart" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
-                                        <i >
-                                            <img src="~/images/RIGHT.png" alt="right-cursor"/>
-                                        </i>
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
+                        }
+                        <li>
+                            <span>@ViewBag.currentPage</span>
+                        </li>
+                        @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                        {
+                            <li>
+                                <a asp-controller="ShoppingCart" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
+                                    <i >
+                                        <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                    </i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </div>
