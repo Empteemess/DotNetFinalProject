@@ -13,8 +13,8 @@ public class ProductService : IProductService
         _repository = repository;
     }
 
-    public IEnumerable<ProductViewModel> FilterProductsByItsInput(int currentPage, int NumberOfItems,
-        string actionForFilter, string filterInput)
+    public IEnumerable<ProductViewModel> GetProductsByItsInput(int currentPage, int NumberOfItems,
+        string actionName, string filterInput)
     {
         var products = _repository.GetAllProducts().Select(x => new ProductViewModel()
         {
@@ -27,7 +27,7 @@ public class ProductService : IProductService
             CategoryEnum = x.CategoryEnum
         });
 
-        switch (actionForFilter)
+        switch (actionName)
         {
             case "High to Low":
                 products = products.OrderByDescending(x => x.Price);
@@ -37,6 +37,12 @@ public class ProductService : IProductService
                 break;
             case "Search":
                 products = products.Where(x => x.Name.ToLower().Contains(filterInput));
+                break;
+            case "Male":
+                products = products.Where(x => (int)x.CategoryEnum == 2);
+                break;
+            case "Female":
+                products = products.Where(x => (int)x.CategoryEnum == 1);
                 break;
             default:
                 products = products;

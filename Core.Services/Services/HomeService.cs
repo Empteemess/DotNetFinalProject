@@ -12,20 +12,17 @@ public class HomeService : IHomeService
         _repository = repository;
     }
 
-    public IEnumerable<Product> MapViewModelDataToDto(int currentPage, int NumberOfItems)
+    public IEnumerable<Product> DivideDataForPaging(int currentPage, int numberOfItems)
     {
-        
-        
-        
         var products = _repository.GetAllProducts();
-        var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems).ToList();
+        var exactProducts = products.Skip((currentPage - 1) * numberOfItems).Take(numberOfItems).ToList();
         return exactProducts;
     }
 
-    public bool CheckPageNum(int currentPage,int NumberOfItems)
+    public bool CheckPageNum(int currentPage,int numberOfItems)
     {
         var count = ProductCount();
-        var maxPageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        var maxPageNum = (int)Math.Ceiling(count / (double)numberOfItems);
         if (currentPage > maxPageNum)
         {
             return false;

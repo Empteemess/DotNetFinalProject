@@ -105,7 +105,7 @@ public class ShoppingCartService : IShoppingCartService
         return false;
     }
 
-    public async Task EmailSenderAsync()
+    public async Task<bool> EmailSenderAsync()
     {
         var text = string.Empty;
         var user = await _repository.GetCurrentUserAsync();;
@@ -151,17 +151,19 @@ Total Price: {totalPrice}$";
             try
             {
                 smtp.Send(email);
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to send email: {ex.Message}");
+                return false;
             }
 
             smtp.Disconnect(true);
         }
     }
 
-    public async Task EmailSenderAsync(string userEmail, string userText)
+    public async Task<bool> EmailSenderAsync(string userEmail, string userText)
     {
         var text = userText;
         var customerEmail = userEmail;
@@ -190,10 +192,12 @@ Total Price: {totalPrice}$";
             try
             {
                 smtp.Send(email);
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to send email: {ex.Message}");
+                return false;
             }
 
             smtp.Disconnect(true);

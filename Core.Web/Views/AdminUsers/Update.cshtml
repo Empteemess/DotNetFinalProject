@@ -38,7 +38,6 @@
             <td>@Model.Email</td>
             <td>
                 <select asp-for="UpdateRoleName">
-                    <!-- Added name attribute to the select element -->
                     @foreach (var item in Model.IdentityRole)
                     {
                         <option>@item.Name</option>
@@ -48,7 +47,7 @@
         </tr>
         </tbody>
     </table>
-    <button type="submit">Save</button> <!-- Added submit button -->
+    <button type="submit" class="btn-secondary">Save</button> 
 </form>
 
 </body>

@@ -12,8 +12,8 @@ public interface IShoppingCartService
     Task<bool> DeleteItemAsync(int id);
     Task BuyItemAsync();
     Task RemoveProductQuantity(int id,int sellQuantity);
-    Task EmailSenderAsync();
-    Task EmailSenderAsync(string userEmail,string userText);
+    Task<bool> EmailSenderAsync();
+    Task<bool> EmailSenderAsync(string userEmail, string userText);
     Task AddProductsInCartAsync(int id, int sellQuantity);
     CreditCartViewModel MapCartProductsToCreditCadViewModel(IEnumerable<CartProducts> cartProducts);
 }

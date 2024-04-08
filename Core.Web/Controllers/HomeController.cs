@@ -26,7 +26,7 @@ public class HomeController : Controller
         }
         
         var count = _service.ProductCount();
-        var ProductsByNumber = _service.MapViewModelDataToDto(currentPage,NumberOfItems);
+        var ProductsByNumber = _service.DivideDataForPaging(currentPage,NumberOfItems);
         
         ViewBag.currentPage = currentPage;
         ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);

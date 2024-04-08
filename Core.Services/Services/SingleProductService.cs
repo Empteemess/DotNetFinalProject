@@ -12,13 +12,14 @@ public class SingleProductService : ISingleProductService
         _repository = repository;
     }
 
-    public ProductViewModel MapViewModelToDto(int id, int currentPage, int NumberOfItems)
+    public ProductViewModel MapViewModelToDto(int id, int currentPage, int numberOfItems)
     {
         var exactProduct = _repository.GetProductById(id);
 
         var count = ProductCount();
+        
         var products = _repository.GetAllProducts();
-        var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems).ToList();
+        var exactProducts = products.Skip((currentPage - 1) * numberOfItems).Take(numberOfItems).ToList();
 
         var productDto = new ProductViewModel()
         {

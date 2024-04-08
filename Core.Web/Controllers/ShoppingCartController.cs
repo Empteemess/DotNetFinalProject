@@ -88,4 +88,9 @@ public class ShoppingCartController : Controller
         var result = await _cartService.DeleteItemAsync(id);
         return RedirectToAction(nameof(Index));
     }
+
+    public IActionResult ButtonCheckResultSetter(bool buyButtonCheck)
+    {
+        return RedirectToAction(nameof(Index), new { buyButtonCheck });
+    }
 }

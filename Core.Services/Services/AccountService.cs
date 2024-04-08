@@ -44,7 +44,7 @@ public class AccountService : IAccountService
 
     public async Task LogOutAsync()
     {
-        _dependencyConfiguration._signInManager.SignOutAsync();
+        await _dependencyConfiguration._signInManager.SignOutAsync();
     }
 
     public async Task CreateRoleAsync(string roleName)
