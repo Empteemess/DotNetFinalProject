@@ -13,4 +13,5 @@ public interface IAdminUsersService
     Task UpdateRole(string email, string newRole);
     Task<IEnumerable<UserViewModel>> FilterByInput(int currentPage, int maxItem, string email, string filterName);
     int Count();
+    Task<bool> DeleteUserByEmail(string email);
 }

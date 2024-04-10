@@ -13,7 +13,7 @@ public class ProductService : IProductService
         _repository = repository;
     }
 
-    public IEnumerable<ProductViewModel> GetProductsByItsInput(int currentPage, int NumberOfItems,
+    public IEnumerable<ProductViewModel> GetProductsByItsInput(int currentPage, int numberOfItems,
         string actionName, string filterInput)
     {
         var products = _repository.GetAllProducts().Select(x => new ProductViewModel()
@@ -49,13 +49,13 @@ public class ProductService : IProductService
                 break;
         }
 
-        var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems);
+        var exactProducts = products.Skip((currentPage - 1) * numberOfItems).Take(numberOfItems);
         return exactProducts;
     }
-    public bool CheckPageNum(int currentPage,int NumberOfItems)
+    public bool CheckPageNum(int currentPage,int numberOfItems)
     {
         var count = ProductCount();
-        var maxPageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        var maxPageNum = (int)Math.Ceiling(count / (double)numberOfItems);
         if (currentPage > maxPageNum)
         {
             return false;

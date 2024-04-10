@@ -18,29 +18,33 @@ public class AdminProductsController : Controller
         _shoppingCartService = shoppingCartService;
         _productsService = productsService;
     }
-    public IActionResult Products(int currentPage = 1, int NumberOfItems = 6)
+    [HttpGet]
+    public IActionResult Products(int currentPage = 1, int numberOfItems = 6)
     {
         var count = _productService.ProductCount();
         var filteredProducts =
-            _productsService.FilterProductsByItsInput(currentPage, NumberOfItems, string.Empty, string.Empty);
+            _productsService.FilterProductsByItsInput(currentPage, numberOfItems, string.Empty, string.Empty);
 
         ViewBag.currentPage = currentPage;
-        ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        ViewBag.PageNum = (int)Math.Ceiling(count / (double)numberOfItems);
 
         return View(filteredProducts);
     }
 
     [HttpPost]
-    public IActionResult Products(int currentPage = 1, int NumberOfItems = 6, string actionForFilter = "",
+    public IActionResult Products(int currentPage = 1, int numberOfItems = 6, string actionForFilter = "",
         string filterInput = "")
     {
         var count = _productService.ProductCount();
         var filteredProducts =
-            _productsService.FilterProductsByItsInput(currentPage, NumberOfItems, actionForFilter, filterInput);
+            _productsService.FilterProductsByItsInput(currentPage, numberOfItems, actionForFilter, filterInput);
 
         ViewBag.currentPage = currentPage;
-        ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        ViewBag.PageNum = (int)Math.Ceiling(count / (double)numberOfItems);
 
+        ViewData["ActionFilter"] = actionForFilter;
+        ViewData["FilterInput"] = filterInput;
+        
         return View(filteredProducts);
     }
 

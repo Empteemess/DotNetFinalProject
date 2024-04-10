@@ -15,19 +15,19 @@ public class ProductController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index(int currentPage = 1, int NumberOfItems = 6, string actionForFilter = "", string filterInput = "")
+    public IActionResult Index(int currentPage = 1, int numberOfItems = 6)
     {
-        var check = _service.CheckPageNum(currentPage, NumberOfItems);
+        var check = _service.CheckPageNum(currentPage, numberOfItems);
         if (!check)
         {
             return RedirectToAction("Index", "Error");
         }
 
         var count = _service.ProductCount();
-        var filteredProducts = _service.GetProductsByItsInput(currentPage, NumberOfItems, actionForFilter, filterInput);
+        var filteredProducts = _service.GetProductsByItsInput(currentPage, numberOfItems, string.Empty, string.Empty);
 
         ViewBag.currentPage = currentPage;
-        ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        ViewBag.PageNum = (int)Math.Ceiling(count / (double)numberOfItems);
 
         return View(filteredProducts);
     }
@@ -35,21 +35,18 @@ public class ProductController : Controller
     [HttpPost]
     public IActionResult Index(int currentPage = 1, string actionForFilter = "", string filterInput = "")
     {
-        var NumberOfItems = 6;
+        var numberOfItems = 6;
         var count = _service.ProductCount();
     
-        var filteredProducts = _service.GetProductsByItsInput(currentPage, NumberOfItems, actionForFilter, filterInput);
+        var filteredProducts = _service.GetProductsByItsInput(currentPage, numberOfItems, actionForFilter, filterInput);
 
         ViewBag.currentPage = currentPage;
-        ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        ViewBag.PageNum = (int)Math.Ceiling(count / (double)numberOfItems);
+
+        ViewData["ActionFilter"] = actionForFilter;
+        ViewData["FilterInput"] = filterInput;
+        
 
         return View(filteredProducts);
     }
-
-
-    public IActionResult Filter(string actionForFilter = "", string filterInput = "")
-    {
-        return RedirectToAction("Index", new { actionForFilter, filterInput });
-    }
-
 }

@@ -6,9 +6,14 @@ namespace FinalProject.Configurations;
 
 public class DependencyConfiguration
 {
-    public readonly UserManager<ApplicationUser> _userManager;
-    public readonly SignInManager<ApplicationUser> _signInManager;
-    public readonly RoleManager<IdentityRole> _roleManager;
+    public virtual UserManager<ApplicationUser> _userManager { get; set; }
+    public virtual SignInManager<ApplicationUser> _signInManager { get; set; }
+    public virtual RoleManager<IdentityRole> _roleManager { get; set; }
+
+    public DependencyConfiguration()
+    {
+    }
+
     public DependencyConfiguration(UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         RoleManager<IdentityRole> roleManager

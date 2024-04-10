@@ -79,7 +79,7 @@ public class AdminProductsService : IAdminProductsService
     }
 
 
-    public IEnumerable<Product> FilterProductsByItsInput(int currentPage, int NumberOfItems,
+    public IEnumerable<Product> FilterProductsByItsInput(int currentPage, int numberOfItems,
         string actionForFilter, string filterInput)
     {
         var products = _productsRepository.GetAllProducts();
@@ -99,7 +99,7 @@ public class AdminProductsService : IAdminProductsService
                 break;
         }
 
-        var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems);
+        var exactProducts = products.Skip((currentPage - 1) * numberOfItems).Take(numberOfItems);
         return exactProducts;
     }
 

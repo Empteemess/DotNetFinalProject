@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<ProductViewModel>
-
+@{
+    var actionFilter = (string)ViewData["ActionFilter"];
+    var filterInput = (string)ViewData["FilterInput"];
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -187,39 +190,41 @@
         }
     </div>
 
-    <div class="page-navigation">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul>
-                        @if (ViewBag.currentPage > 1)
-                        {
+    <form method="post" asp-controller="Product" asp-action="Index">
+        <div class="page-navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul>
+                            @if (ViewBag.currentPage > 1)
+                            {
+                                <li>
+                                    <button type="submit" style="border: none;background: none" asp-route-currentPage="@((int)ViewBag.currentPage - 1)" asp-route-actionForFilter="@actionFilter">
+                                        <i >
+                                            <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                        </i>
+                                    </button>
+                                </li>
+                            }
                             <li>
-                                <a asp-controller="Product" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
-                                    <i >
-                                        <img src="~/images/LEFT.png" alt="left-cursor"/>
-                                    </i>
-                                </a>
+                                <span>@ViewBag.currentPage</span>
                             </li>
-                        }
-                        <li>
-                            <span>@ViewBag.currentPage</span>
-                        </li>
-                        @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
-                        {
-                            <li>
-                                <a asp-controller="Product" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
-                                    <i >
-                                        <img src="~/images/RIGHT.png" alt="right-cursor"/>
-                                    </i>
-                                </a>
-                            </li>
-                        }
-                    </ul>
+                            @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                            {
+                                <li>
+                                    <button type="submit" style="border: none;background: none" asp-route-currentPage="@((int)ViewBag.currentPage + 1)" asp-route-actionForFilter="@actionFilter">
+                                        <i >
+                                            <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                        </i>
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
     <!-- Featred Page Ends Here -->
 
     <!-- Subscribe Form Starts Here -->

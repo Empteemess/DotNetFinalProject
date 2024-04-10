@@ -67,7 +67,7 @@ public class ShoppingCartController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        var item = await _cartService.GetItemByIdAsync(id);
+        var item = await _cartService.MapItemsQuantities(id);
         return View(item);
     }
 

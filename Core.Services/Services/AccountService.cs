@@ -101,19 +101,22 @@ public class AccountService : IAccountService
     public async Task<bool> PasswordUpdate(string email, string password)
     {
         var user = await GetCurrentUserByEmailAsync(email);
-        var token = await _dependencyConfiguration._userManager.GeneratePasswordResetTokenAsync(user);
-        var result = await _dependencyConfiguration._userManager.ResetPasswordAsync(user, token, password);
-        if (result.Succeeded)
+        if (user != null)
         {
-            return true;
+            var token = await _dependencyConfiguration._userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _dependencyConfiguration._userManager.ResetPasswordAsync(user, token, password);
+            if (result.Succeeded)
+            {
+                return true;
+            }
         }
         return false;
     }
 
     public async Task<bool> CheckEmail(string email)
     {
-        var emailCheck = await _dependencyConfiguration._userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
-        if (emailCheck == null)
+        var user = await _dependencyConfiguration._userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
+        if (user == null)
         {
             return false;
         }

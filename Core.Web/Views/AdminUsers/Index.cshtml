@@ -81,6 +81,7 @@
             <td>@item.Role</td>
             <td>
                 <a class="btn btn-secondary" asp-controller="AdminUsers" asp-action="Update" asp-route-email="@item.Email">Edit</a>
+                <a class="btn btn-secondary" asp-controller="AdminUsers" asp-action="DeleteUser" asp-route-email="@item.Email">Delete</a>
             </td>
         </tr>
     }

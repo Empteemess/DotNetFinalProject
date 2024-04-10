@@ -7,7 +7,7 @@ public interface IShoppingCartService
 {
     Task<IEnumerable<CartProducts>> GetPersonCartItemsAsync();
     Task<double> GetSelledProductPriceAsync();
-    Task<CartProducts> GetItemByIdAsync(int id);
+    Task<CartProducts> MapItemsQuantities(int id);
     Task<bool> UpdateEditedItemAsync(CartProducts model);
     Task<bool> DeleteItemAsync(int id);
     Task BuyItemAsync();

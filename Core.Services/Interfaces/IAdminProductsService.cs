@@ -10,6 +10,6 @@ public interface IAdminProductsService
     Task<string> UploadFileAsync(IFormFile file);
     Task AddItemAsync(Product model, IFormFile file);
     bool DeleteItem(int id);
-    IEnumerable<Product> FilterProductsByItsInput(int currentPage, int NumberOfItems,
+    IEnumerable<Product> FilterProductsByItsInput(int currentPage, int numberOfItems,
         string actionForFilter, string filterInput);
 }

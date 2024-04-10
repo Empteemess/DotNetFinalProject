@@ -19,7 +19,7 @@ public class ShoppingCartService : IShoppingCartService
     private readonly AppDbContext _context;
 
     public ShoppingCartService(DependencyConfiguration dependencyConfiguration,
-        IHttpContextAccessor httpContextAccessor,IShoppingCartRepository repository,
+        IHttpContextAccessor httpContextAccessor, IShoppingCartRepository repository,
         AppDbContext context)
     {
         _dependencyConfiguration = dependencyConfiguration;
@@ -56,7 +56,7 @@ public class ShoppingCartService : IShoppingCartService
         return wholePrice;
     }
 
-    public async Task<CartProducts> GetItemByIdAsync(int id)
+    public async Task<CartProducts> MapItemsQuantities(int id)
     {
         var user = await _repository.GetCurrentUserAsync();
 
@@ -68,15 +68,15 @@ public class ShoppingCartService : IShoppingCartService
 
     public async Task<bool> UpdateEditedItemAsync(CartProducts model)
     {
-        var user = await _repository.GetCurrentUserAsync();;
-
+        var user = await _repository.GetCurrentUserAsync();
         var exactItem = user.CartProducts.FirstOrDefault(x => x.Id == model.Id);
-        var item = await _context.Products.FirstOrDefaultAsync(x => x.Id == exactItem.ProductId);
-
-        var itemQuantity = (item.Quantity + exactItem.SellQuantity);
 
         if (exactItem != null)
         {
+            var item = await _context.Products.FirstOrDefaultAsync(x => x.Id == exactItem.ProductId);
+
+            var itemQuantity = (item.Quantity + exactItem.SellQuantity);
+
             exactItem.SellQuantity = model.SellQuantity;
             item.Quantity = itemQuantity - model.SellQuantity;
 
@@ -90,13 +90,13 @@ public class ShoppingCartService : IShoppingCartService
 
     public async Task<bool> DeleteItemAsync(int id)
     {
-        var user = await _repository.GetCurrentUserAsync();;
+        var user = await _repository.GetCurrentUserAsync();
         var item = user.CartProducts.FirstOrDefault(x => x.Id == id);
 
-        await AddProductQuantity(item.ProductId, item.SellQuantity);
 
         if (item != null)
         {
+            await AddProductQuantity(item.ProductId, item.SellQuantity);
             user.CartProducts.Remove(item);
             await _dependencyConfiguration._userManager.UpdateAsync(user);
             return true;
@@ -108,7 +108,8 @@ public class ShoppingCartService : IShoppingCartService
     public async Task<bool> EmailSenderAsync()
     {
         var text = string.Empty;
-        var user = await _repository.GetCurrentUserAsync();;
+        var user = await _repository.GetCurrentUserAsync();
+        ;
         var customerEmail = user.Email;
         var products = user.CartProducts;
         var purchasedItems = "";
@@ -208,7 +209,7 @@ Total Price: {totalPrice}$";
     {
         await EmailSenderAsync();
 
-        var user = await _repository.GetCurrentUserAsync();;
+        var user = await _repository.GetCurrentUserAsync();
         var cartProducts = user.CartProducts;
 
         foreach (var item in cartProducts)
