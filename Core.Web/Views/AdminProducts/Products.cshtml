@@ -52,13 +52,13 @@
             <form method="post">
                 <div class="col-md-8 col-sm-12">
                     <div id="filters" class="button-group">
-                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="All Productss">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter=@ActionNamesEnum.AllProducts>
                             All Productss
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="High to Low">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter=@ActionNamesEnum.HightoLow>
                             High to Low
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="Low to Hight">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter=@ActionNamesEnum.LowtoHight>
                             Low to Hight
                         </button>
                     </div>

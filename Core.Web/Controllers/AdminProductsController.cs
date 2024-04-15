@@ -35,7 +35,7 @@ public class AdminProductsController : Controller
     public IActionResult Products(int currentPage = 1, int numberOfItems = 6, string actionForFilter = "",
         string filterInput = "")
     {
-        var count = _productService.ProductCount();
+        var count = _productService.ProductCount(actionForFilter,filterInput);
         var filteredProducts =
             _productsService.FilterProductsByItsInput(currentPage, numberOfItems, actionForFilter, filterInput);
 

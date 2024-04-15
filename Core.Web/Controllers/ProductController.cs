@@ -36,7 +36,7 @@ public class ProductController : Controller
     public IActionResult Index(int currentPage = 1, string actionForFilter = "", string filterInput = "")
     {
         var numberOfItems = 6;
-        var count = _service.ProductCount();
+        var count = _service.ProductCount(actionForFilter,filterInput);
     
         var filteredProducts = _service.GetProductsByItsInput(currentPage, numberOfItems, actionForFilter, filterInput);
 
