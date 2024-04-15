@@ -1,74 +1,121 @@
-﻿@model  IEnumerable<CartProducts>
+﻿@model  CreditCartViewModel
+@{
+    var buttonCheck = ViewBag.BuyButtonCheck;
+}
 <!DOCTYPE html>
 <html lang="en">
-
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-     <div class="container">
-         <a class="navbar-brand" href="#">
-             <img src="~/images/header-logo.png" alt=""/>
-         </a>
-         <button
-             class="navbar-toggler"
-             type="button"
-             data-toggle="collapse"
-             data-target="#navbarResponsive"
-             aria-controls="navbarResponsive"
-             aria-expanded="false"
-             aria-label="Toggle navigation">
-             <span class="navbar-toggler-icon"></span>
-         </button>
-         <div class="collapse navbar-collapse" id="navbarResponsive">
-             <ul class="navbar-nav ml-auto d-flex flex-row">
-                 <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                 <li class="nav-item active">
-                     <li class="nav-item">
-                         <a class="nav-link" asp-controller="Product" asp-action="Index">Productss</a>
-                         <span class="sr-only">(current)</span>
-                     </li>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
-                 </li>
-                 @if (!User.Identity.IsAuthenticated)
-                 {
-                     <li class="nav-item">
-                         <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
-                     </li>
-                 }
-                 else
-                 {
-                     <li class="nav-item">
-                         <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
-                     </li>
-                 }
-                 @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
-                 {
-                     <li class="nav-item">
-                         <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
-                     </li>
-                 }
-                 @if (User.IsInRole("Admin"))
-                 {
-                     <li class="nav-item">
-                         <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-                     </li>
-                 }
-             </ul>
-         </div>
-     </div>
- </nav>
-
-<section class="vh-100 mt-5 p-1">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                @foreach (var item in Model)
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="~/images/header-logo.png" alt=""/>
+        </a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto d-flex flex-row">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                <li class="nav-item active">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Product" asp-action="Index">Productss</a>
+                        <span class="sr-only">(current)</span>
+                    </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
+                </li>
+                @if (!User.Identity.IsAuthenticated)
                 {
-                    <div class="card mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
+                    </li>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <section class=" mt-5 p-1 position-relative">
+        @if (buttonCheck)
+        {
+            <form method="post" asp-controller="ShoppingCart" asp-action="Index">
+                <div class="container-fluid">
+                    <div class="card-container hidden">
+                        <div class="d-flex justify-content-between">
+                            <div class="card-logos">
+                                <img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Visa_Logo.png/640px-Visa_Logo.png"
+                                    alt="visa"/>
+                                <img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/7/72/MasterCard_early_1990s_logo.png"
+                                    alt=""/>
+                            </div>
+                            <div class="close-btn">
+                                <a type="button" asp-controller="ShoppingCart" asp-action="ButtonCheckResultSetter" asp-route-buyButtonCheck="false" >X</a>
+                            </div>
+                        </div>
+                        <div class="card-num">
+                            <label for="card-number">Card Number</label>
+                            <input type="number" asp-for="CardNumber"/>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-hold">
+                                <label for="card-holder">Card Holder</label>
+                                <input type="text" asp-for="Name"/>
+                            </div>
+                            <div class="exp-te">
+                                <label for="exp-date">Exp. Date (MM/YYYY)</label>
+                                <input type="text" asp-for="DateTime" pattern="(0[1-9]|1[0-2])\/\d{4}" placeholder="MM/YYYY"/>
+                            </div>
+                            <div class="ccv-code">
+                                <label for="ccv">CCV</label>
+                                <input type="number" asp-for="SecurityCode" maxlength="3"/>
+                            </div>
+                        </div>
+
+                        <button class="apply-btn" type="submit">APPLY</button>
+                    </div>
+                </div>
+            </form>
+        }
+        @if (!Model.CartProducts.Any())
+        {
+            <div class="null-msg">
+                <p class="text-danger font-weight-bold mt-3" style="font-size: 32px; text-align: center; ">Cart is Empty</p>
+            </div>
+        }
+        <div class="row ">
+            <div class="col-md-6 product-position">
+
+                @foreach (var item in Model.CartProducts)
+                {
+                    <div class="card mb-3 product-styles">
                         <div class="row g-0">
                             <div class="col-md-4">
                                 <img src="@Url.Content(item.Image)" class="img-fluid rounded-start" alt="Products 1">
@@ -82,7 +129,7 @@
                                         <strong>Quantity: </strong>@item.SellQuantity
                                     </p>
                                     <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id">Update</a>
-                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@item.Id" >Delete</a>
+                                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -90,12 +137,16 @@
                 }
             </div>
         </div>
+        <div class="col-md-6 text-right ">
+            <p>Total Price - @((double)ViewBag.WholeSelledProductPrice)$</p>
+            <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Index" asp-route-buyButtonCheck="true">Buy</a>
+        </div>
         <div class="page-navigation">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <ul>
-                            <div>Price - @((double)ViewBag.WholeSelledProductPrice)$</div>
+
                             @if (ViewBag.currentPage > 1)
                             {
                                 <li>
@@ -124,6 +175,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
 </html>

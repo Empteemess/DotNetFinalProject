@@ -14,7 +14,8 @@ public class AdminProductsService : IAdminProductsService
     private readonly IWebHostEnvironment _environment;
     private readonly DependencyConfiguration _dependencyConfiguration;
 
-    public AdminProductsService(IAdminProductsRepository<Product> productsRepository, IWebHostEnvironment environment,DependencyConfiguration dependencyConfiguration)
+    public AdminProductsService(IAdminProductsRepository<Product> productsRepository, IWebHostEnvironment environment,
+        DependencyConfiguration dependencyConfiguration)
     {
         _productsRepository = productsRepository;
         _environment = environment;
@@ -25,28 +26,31 @@ public class AdminProductsService : IAdminProductsService
     {
         return _productsRepository.GetProductById(id);
     }
-
-    public async Task UpdateEditedItem(Product model, IFormFile file)
+   
+    public async Task UpdateEditedItemAsync(Product model, IFormFile file)
     {
-        //Remove
         var item = _productsRepository.GetProductById(model.Id);
-        var imagePath = Path.Combine(_environment.WebRootPath, "uploadImages", Path.GetFileName(item.Image));
-        File.Delete(imagePath);
 
-        //Add Photo
-        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-        var uploadPath = Path.Combine("uploadImages");
-        var filePath = Path.Combine(uploadPath, fileName);
-        var absolutePath = Path.Combine(_environment.WebRootPath, filePath);
-        
-        using (var stream = new FileStream(absolutePath, FileMode.Create))
+        item.Name = model.Name;
+        item.Price = model.Price;
+        item.Quantity = model.Quantity;
+        item.Description = model.Description;
+        item.CategoryEnum = model.CategoryEnum;
+
+        if (file != null)
         {
-            await file.CopyToAsync(stream);
-        }
+            var imagePath = Path.Combine(_environment.WebRootPath, "uploadImages", Path.GetFileName(item.Image));
+            File.Delete(imagePath);
 
-        item.Image = $"~/{filePath}";
-        //Update
-        _productsRepository.Update(item);
+            var filePath = await UploadFileAsync(file);
+
+            item.Image = $"~/{filePath}";
+            _productsRepository.Update(item);
+        }
+        else
+        {
+            _productsRepository.Update(item);
+        }
     }
 
 
@@ -67,7 +71,7 @@ public class AdminProductsService : IAdminProductsService
         return filePath;
     }
 
-    public async Task AddItem(Product model, IFormFile file)
+    public async Task AddItemAsync(Product model, IFormFile file)
     {
         var path = await UploadFileAsync(file);
         model.Image = $@"~/{path}";
@@ -75,7 +79,7 @@ public class AdminProductsService : IAdminProductsService
     }
 
 
-    public IEnumerable<Product> FilterProductsByItsInput(int currentPage, int NumberOfItems,
+    public IEnumerable<Product> FilterProductsByItsInput(int currentPage, int numberOfItems,
         string actionForFilter, string filterInput)
     {
         var products = _productsRepository.GetAllProducts();
@@ -95,10 +99,10 @@ public class AdminProductsService : IAdminProductsService
                 break;
         }
 
-        var exactProducts = products.Skip((currentPage - 1) * NumberOfItems).Take(NumberOfItems);
+        var exactProducts = products.Skip((currentPage - 1) * numberOfItems).Take(numberOfItems);
         return exactProducts;
     }
-    
+
     public bool DeleteItem(int id)
     {
         var item = _productsRepository.GetAllProducts().FirstOrDefault(x => x.Id == id);

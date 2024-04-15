@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<ProductViewModel>
+@{
+    var actionFilter = (string)ViewData["ActionFilter"];
+    var filterInput = (string)ViewData["FilterInput"];
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,9 +72,6 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
-                </li>
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
@@ -113,27 +114,33 @@
                 </div>
             </div>
 
-           <div class="col-md-8 col-sm-12">
-               <form asp-controller="Product" asp-action="Index" class="form-inline" method="post" asp-route-actionForFilter="Search">
-                   <div class="form-group mx-sm-3 mb-2">
-                       @Html.TextBox("filterInput", null, new { @class = "form-control", placeholder = "Search" })
-                   </div>
-                   <input type="hidden" name="currentPage" value="1"/>
-                   <input type="hidden" name="numberOfItems" value="6"/>
-                   <button  type="submit" class="btn btn-primary mb-2">Search</button>
-               </form>
-           </div>
+            <div class="col-md-8 col-sm-12">
+                <form asp-controller="Product" asp-action="Index" class="form-inline" method="post" asp-route-actionForFilter="Search">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.TextBox("filterInput", null, new { @class = "form-control", placeholder = "Search" })
+                    </div>
+                    <input type="hidden" name="currentPage" value="1"/>
+                    <input type="hidden" name="numberOfItems" value="6"/>
+                    <button type="submit" class="btn btn-primary mb-2">Search</button>
+                </form>
+            </div>
 
             <form method="post">
                 <div class="col-md-8 col-sm-12">
                     <div id="filters" class="button-group">
-                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter="All Productss">
+                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter=@ActionNamesEnum.Male>
+                            Male
+                        </button>
+                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter=@ActionNamesEnum.Female>
+                            Female
+                        </button>
+                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter=@ActionNamesEnum.AllProducts>
                             All Productss
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter="High to Low">
+                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter=@ActionNamesEnum.HightoLow>
                             High to Low
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter="Low to Hight">
+                        <button class="btn btn-primary" type="submit" asp-controller="Product" asp-action="Index" asp-route-actionForFilter=@ActionNamesEnum.LowtoHight>
                             Low to Hight
                         </button>
                     </div>
@@ -155,6 +162,7 @@
                         </div>
                         <h4>@item.Name</h4>
                         <h6>$@item.Price</h6>
+                        <h6>Category : @item.CategoryEnum</h6>
                     </div>
                 </a>
                 @if (!User.Identity.IsAuthenticated)
@@ -168,50 +176,55 @@
                 }
                 else
                 {
-                    <a asp-controller="ShoppingCart" asp-action="AddItem" asp-route-id="@item.Id" asp-route-actionName="Products">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-dash position-absolute svg-class" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
-                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-                        </svg>
-                    </a>
+                    @if (!User.IsInRole("Admin") && item.Quantity != 0)
+                    {
+                        <a asp-controller="ShoppingCart" asp-action="AddItem" asp-route-id="@item.Id" asp-route-actionName="Products">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-dash position-absolute svg-class" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                            </svg>
+                        </a>
+                    }
                 }
             </div>
         }
     </div>
 
-    <div class="page-navigation">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul>
-                        @if (ViewBag.currentPage > 1)
-                        {
+    <form method="post" asp-controller="Product" asp-action="Index">
+        <div class="page-navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul>
+                            @if (ViewBag.currentPage > 1)
+                            {
+                                <li>
+                                    <button type="submit" style="border: none;background: none" asp-route-currentPage="@((int)ViewBag.currentPage - 1)" asp-route-actionForFilter="@actionFilter">
+                                        <i >
+                                            <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                        </i>
+                                    </button>
+                                </li>
+                            }
                             <li>
-                                <a asp-controller="Product" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
-                                    <i >
-                                        <img src="~/images/LEFT.png" alt="left-cursor"/>
-                                    </i>
-                                </a>
+                                <span>@ViewBag.currentPage</span>
                             </li>
-                        }
-                        <li>
-                            <span>@ViewBag.currentPage</span>
-                        </li>
-                        @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
-                        {
-                            <li>
-                                <a asp-controller="Product" asp-action="Index" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
-                                    <i >
-                                        <img src="~/images/RIGHT.png" alt="right-cursor"/>
-                                    </i>
-                                </a>
-                            </li>
-                        }
-                    </ul>
+                            @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                            {
+                                <li>
+                                    <button type="submit" style="border: none;background: none" asp-route-currentPage="@((int)ViewBag.currentPage + 1)" asp-route-actionForFilter="@actionFilter">
+                                        <i >
+                                            <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                        </i>
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
     <!-- Featred Page Ends Here -->
 
     <!-- Subscribe Form Starts Here -->
@@ -262,87 +275,6 @@
         </div>
     </div>
     <!-- Subscribe Form Ends Here -->
-
-    <!-- Footer Starts Here -->
-    <div class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="logo">
-                        <img src="~/images/header-logo.png" alt=""/>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="footer-menu">
-                        <ul>
-                            <li>
-                                <a href="#">Home</a>
-                            </li>
-                            <li>
-                                <a href="#">Help</a>
-                            </li>
-                            <li>
-                                <a href="#">Privacy Policy</a>
-                            </li>
-                            <li>
-                                <a href="#">How It Works ?</a>
-                            </li>
-                            <li>
-                                <a href="#">Contact Us</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="social-icons">
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-rss"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer Ends Here -->
-
-    <!-- Sub Footer Starts Here -->
-    <div class="sub-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="copyright-text">
-                        <p>
-                            Copyright &copy; 2019 Company Name - Design:
-                            <a rel="nofollow" href="https://www.facebook.com/tooplate">
-                                Tooplate
-                            </a
-                            >
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Sub Footer Ends Here -->
 
     <!-- Bootstrap core JavaScript -->
     <script src="~/lib2/jquery/jquery.min.js"></script>

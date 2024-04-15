@@ -13,4 +13,5 @@ public class RegisterViewModel
     [Required]
     [Compare(nameof(Password),ErrorMessage = "Password Doesn't Match")]
     public string ConfirmPassword { get; set; }
+
 }

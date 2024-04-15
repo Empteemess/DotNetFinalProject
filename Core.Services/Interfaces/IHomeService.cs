@@ -4,8 +4,8 @@ namespace FinalProject.Interfaces;
 
 public interface IHomeService
 {
-    IEnumerable<Product> MapViewModelDataToDto(int currentPage,int NumberOfItems);
+    IEnumerable<Product> DivideDataForPaging(int currentPage,int NumberOfItems);
     Product ExactProduct(int id);
     int ProductCount();
-    //list - ienumerable
+    bool CheckPageNum(int currentPage, int NumberOfItems);
 }

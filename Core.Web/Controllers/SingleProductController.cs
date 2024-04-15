@@ -15,7 +15,13 @@ public class SingleProductController : Controller
     }
     public IActionResult Index(int id,int currentPage = 1,int NumberOfItems = 4)
     {
+        var check = _service.CheckProduct(id);
+        if (!check)
+        {
+            return RedirectToAction("Index", "Error");
+        }
         var count = _service.ProductCount();
+        
         var ProductsByNumber = _service.MapViewModelToDto(id,currentPage,NumberOfItems);
         
         ViewBag.currentPage = currentPage;

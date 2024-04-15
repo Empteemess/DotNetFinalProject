@@ -1,6 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model UserViewModel
 <!DOCTYPE html>
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="~/images/header-logo.png" alt=""/>
+            </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto d-flex flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="AdminUsers" asp-action="Index">User Management</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 <html>
 <head>
     <title>Edit User Role</title>
@@ -24,12 +48,15 @@
 </head>
 <body>
 
-<h2>Roles</h2>
+<div class="mt-5 p-2">
+    <h2 style="font-size: 20px; text-align: left;">Edit Roles</h2>
+</div>
+
 <table>
     <thead>
     <tr>
         <th>Role</th>
-        <th>Action</th> <!-- Added Action column header -->
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -38,9 +65,9 @@
     {
         <tr>
             <td>@item</td>
-            <td> 
+            <td>
                 <form method="post">
-                    <button asp-controller="AdminUsers" asp-action="Delete" asp-route-role="@item.Name" type="submit">Delete</button>
+                    <button asp-controller="AdminUsers" asp-action="Delete" asp-route-role="@item.Name" type="submit" class="btn-secondary">Delete</button>
                 </form>
             </td>
         </tr>
@@ -48,9 +75,9 @@
     </tbody>
 </table>
 <form method="post" asp-controller="AdminUsers" asp-action="Edit">
-    
-    <input class="text" asp-for="AddRoleName" type="text"/>
-    <button type="submit">Add</button>
+
+    <input class="text admin-text" asp-for="AddRoleName" type="text"/>
+    <button type="submit" class="btn-secondary">Add</button>
 </form>
 
 </body>

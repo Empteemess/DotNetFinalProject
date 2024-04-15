@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<Product>
+@{
+    var actionFilter = (string)ViewData["ActionFilter"];
+    var filterInput = (string)ViewData["FilterInput"];
+}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
         <a class="navbar-brand" href="#">
@@ -48,13 +52,13 @@
             <form method="post">
                 <div class="col-md-8 col-sm-12">
                     <div id="filters" class="button-group">
-                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="All Productss">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter=@ActionNamesEnum.AllProducts>
                             All Productss
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="High to Low">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter=@ActionNamesEnum.HightoLow>
                             High to Low
                         </button>
-                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter="Low to Hight">
+                        <button class="btn btn-primary" type="submit" asp-controller="AdminProducts" asp-action="Products" asp-route-actionForFilter=@ActionNamesEnum.LowtoHight>
                             Low to Hight
                         </button>
                     </div>
@@ -78,6 +82,8 @@
                         </div>
                         <h4>@item.Name</h4>
                         <h6>$@item.Price</h6>
+                        <h6>Quantity - @item.Quantity</h6>
+
                     </div>
                     <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Update" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@item.Id" asp-route-currentPage="@((int)ViewBag.currentPage)">Delete</a>
@@ -89,36 +95,40 @@
         <a class="btn btn-secondary" asp-controller="AdminProducts" asp-action="Add">Add Item</a>
     </div>
 </div>
-<div class="page-navigation">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <ul>
-                    @if (ViewBag.currentPage > 1)
-                    {
+
+
+<form method="post" asp-controller="AdminProducts" asp-action="Products">
+    <div class="page-navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        @if (ViewBag.currentPage > 1)
+                        {
+                            <li>
+                                <button type="submit" style="border: none;background: none" asp-route-currentPage="@((int)ViewBag.currentPage - 1)" asp-route-actionForFilter="@actionFilter">
+                                    <i >
+                                        <img src="~/images/LEFT.png" alt="left-cursor"/>
+                                    </i>
+                                </button>
+                            </li>
+                        }
                         <li>
-                            <a asp-controller="AdminProducts" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage - 1)">
-                                <i >
-                                    <img src="~/images/LEFT.png" alt="left-cursor"/>
-                                </i>
-                            </a>
+                            <span>@ViewBag.currentPage</span>
                         </li>
-                    }
-                    <li>
-                        <span>@ViewBag.currentPage</span>
-                    </li>
-                    @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
-                    {
-                        <li>
-                            <a asp-controller="AdminProducts" asp-action="Products" asp-route-currentPage="@((int)ViewBag.currentPage + 1)">
-                                <i >
-                                    <img src="~/images/RIGHT.png" alt="right-cursor"/>
-                                </i>
-                            </a>
-                        </li>
-                    }
-                </ul>
+                        @if ((int)ViewBag.currentPage < (int)ViewBag.PageNum)
+                        {
+                            <li>
+                                <button type="submit" type="submit" style="border: none;background: none" asp-route-currentPage="@((int)ViewBag.currentPage + 1)" asp-route-actionForFilter="@actionFilter">
+                                    <i >
+                                        <img src="~/images/RIGHT.png" alt="right-cursor"/>
+                                    </i>
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>

@@ -16,6 +16,9 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto d-flex flex-row">
                 <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
                 </li>
             </ul>
@@ -24,8 +27,8 @@
 </nav>
 <!-- New Section for Square Buttons -->
 <!-- New Section for Square Buttons -->
-<div class="container mt-5">
-    <div class="row justify-content-center mt-5">
+<div class="container mt-5 pt-1">
+    <div class="row justify-content-center mt-5 flex-column align-items-center">
         <div class="col-md-6">
             <div class="text-center">
                 <a class="btn btn-primary btn-lg btn-block mb-4" asp-controller="AdminProducts" asp-action="Products">Productss</a>

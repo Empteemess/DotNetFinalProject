@@ -1,5 +1,4 @@
 ﻿using FinalProject.Data;
-using FinalProject.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
@@ -7,22 +6,21 @@ namespace FinalProject.Configurations;
 
 public class DependencyConfiguration
 {
-    public readonly UserManager<ApplicationUser> _userManager;
-    public readonly SignInManager<ApplicationUser> _signInManager;
-    public readonly RoleManager<IdentityRole> _roleManager;
-    public readonly IHttpContextAccessor _httpContextAccessor;
-    public readonly AppDbContext _context;
+    public virtual UserManager<ApplicationUser> _userManager { get; set; }
+    public virtual SignInManager<ApplicationUser> _signInManager { get; set; }
+    public virtual RoleManager<IdentityRole> _roleManager { get; set; }
+
+    public DependencyConfiguration()
+    {
+    }
 
     public DependencyConfiguration(UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        RoleManager<IdentityRole> roleManager,
-        IHttpContextAccessor httpContextAccessor,
-        AppDbContext context)
+        RoleManager<IdentityRole> roleManager
+    )
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
-        _httpContextAccessor = httpContextAccessor;
-        _context = context;
     }
 }

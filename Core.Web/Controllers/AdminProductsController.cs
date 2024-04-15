@@ -9,38 +9,42 @@ namespace FinalProject.Controllers;
 public class AdminProductsController : Controller
 {
     private readonly IProductService _productService;
-    private readonly IShoppingService _shoppingService;
+    private readonly IShoppingCartService _shoppingCartService;
     private readonly IAdminProductsService _productsService;
 
-    public AdminProductsController(IProductService productService, IShoppingService shoppingService, IAdminProductsService productsService)
+    public AdminProductsController(IProductService productService, IShoppingCartService shoppingCartService, IAdminProductsService productsService)
     {
         _productService = productService;
-        _shoppingService = shoppingService;
+        _shoppingCartService = shoppingCartService;
         _productsService = productsService;
     }
-    public IActionResult Products(int currentPage = 1, int NumberOfItems = 6)
+    [HttpGet]
+    public IActionResult Products(int currentPage = 1, int numberOfItems = 6)
     {
         var count = _productService.ProductCount();
         var filteredProducts =
-            _productsService.FilterProductsByItsInput(currentPage, NumberOfItems, string.Empty, string.Empty);
+            _productsService.FilterProductsByItsInput(currentPage, numberOfItems, string.Empty, string.Empty);
 
         ViewBag.currentPage = currentPage;
-        ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        ViewBag.PageNum = (int)Math.Ceiling(count / (double)numberOfItems);
 
         return View(filteredProducts);
     }
 
     [HttpPost]
-    public IActionResult Products(int currentPage = 1, int NumberOfItems = 6, string actionForFilter = "",
+    public IActionResult Products(int currentPage = 1, int numberOfItems = 6, string actionForFilter = "",
         string filterInput = "")
     {
-        var count = _productService.ProductCount();
+        var count = _productService.ProductCount(actionForFilter,filterInput);
         var filteredProducts =
-            _productsService.FilterProductsByItsInput(currentPage, NumberOfItems, actionForFilter, filterInput);
+            _productsService.FilterProductsByItsInput(currentPage, numberOfItems, actionForFilter, filterInput);
 
         ViewBag.currentPage = currentPage;
-        ViewBag.PageNum = (int)Math.Ceiling(count / (double)NumberOfItems);
+        ViewBag.PageNum = (int)Math.Ceiling(count / (double)numberOfItems);
 
+        ViewData["ActionFilter"] = actionForFilter;
+        ViewData["FilterInput"] = filterInput;
+        
         return View(filteredProducts);
     }
 
@@ -51,9 +55,10 @@ public class AdminProductsController : Controller
         return View(item);
     }
 
-    public IActionResult Update(Product model,IFormFile file)
+    [HttpPost]
+    public async Task<IActionResult> Update(Product model,IFormFile file)
     {
-        _productsService.UpdateEditedItem(model,file);
+        await _productsService.UpdateEditedItemAsync(model,file);
         return RedirectToAction(nameof(Products));
     }
 
@@ -74,7 +79,7 @@ public class AdminProductsController : Controller
     {
         if (file != null)
         {
-            await _productsService.AddItem(model, file);
+            await _productsService.AddItemAsync(model, file);
         }
         return RedirectToAction(nameof(Products));
     }

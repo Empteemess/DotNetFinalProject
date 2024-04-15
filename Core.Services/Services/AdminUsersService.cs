@@ -24,7 +24,7 @@ public class AdminUsersService : IAdminUsersService
         var user = _dependencyConfiguration._userManager.Users.Count();
         return user;
     }
-    
+
     public IEnumerable<IdentityRole> GetRoles()
     {
         var roles = _dependencyConfiguration._roleManager.Roles;
@@ -110,7 +110,8 @@ public class AdminUsersService : IAdminUsersService
         _dependencyConfiguration._userManager.UpdateAsync(user);
     }
 
-    public async Task<IEnumerable<UserViewModel>> FilterByInput(int currentPage, int maxItem, string email, string filterName)
+    public async Task<IEnumerable<UserViewModel>> FilterByInput(int currentPage, int maxItem, string email,
+        string filterName)
     {
         IEnumerable<UserViewModel> user;
 
@@ -123,9 +124,21 @@ public class AdminUsersService : IAdminUsersService
         {
             user = await GetUsers();
         }
-        
+
         var result = user.Skip((currentPage - 1) * maxItem).Take(maxItem);
-        
+
         return result;
+    }
+
+    public async Task<bool> DeleteUserByEmail(string email)
+    {
+        var user = await _dependencyConfiguration._userManager.FindByEmailAsync(email);
+        if (user != null)
+        {
+            var result = await _dependencyConfiguration._userManager.DeleteAsync(user);
+            return true;
+        }
+
+        return false;
     }
 }

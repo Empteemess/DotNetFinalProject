@@ -39,52 +39,29 @@
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-            <img src="~/images/header-logo.png" alt="">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto d-flex flex-row">
-                <li class="nav-item active">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index">
-                        Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Product" asp-action="Index">Productss</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
-                </li>
-                @if (!User.Identity.IsAuthenticated)
-                {
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="~/images/header-logo.png" alt=""/>
+            </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto d-flex flex-row">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link" asp-controller="AdminProducts" asp-action="Products">Products</a>
                     </li>
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
-                    </li>
-                }
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
-                    </li>
-                }
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 <!-- Page Content -->
 <!-- Single Starts Here -->
@@ -98,25 +75,24 @@
                 </div>
             </div>
 
-            @* Display Image and Include Hidden Input Field for Image URL *@
             <div class="col-md-6">
                 <img src="@Model.Image" class="img-fluid" alt="Big Photo">
 
             </div>
             @* photo *@
             <div class="mb-3 mt-3">
-                    <form method="post" enctype="multipart/form-data" asp-controller="AdminProducts" asp-action="Update" asp-route-id="@Model.Id">
+                    <form method="post" enctype="multipart/form-data" asp-controller="AdminProducts" asp-action="Update">
                         <div class="mb-3">
                             <label class="form-label">Upload File</label>
                             <input type="file" name="file" class="form-control"/>
                             <h4>Name</h4>
-                            <input class="text" value="@Model.Name" asp-for="Name" type="text"/>
+                            <input class="text admin-text" value="@Model.Name" asp-for="Name" type="text"/>
                             <h4>Description</h4>
-                            <input class="text" value="@Model.Description" asp-for="Description" type="text"/>
+                            <input class="text admin-text" value="@Model.Description" asp-for="Description" type="text"/>
                             <h4>Price</h4>
-                            <input class="text" value="@Model.Price" asp-for="Price" type="number" min="1"/>
+                            <input class="text admin-text" value="@Model.Price" asp-for="Price" type="number" min="1"/>
                             <h4>Quantity</h4>
-                            <input class="text" value="@Model.Quantity" asp-for="Quantity" type="number" min="1"/>
+                            <input class="text admin-text" value="@Model.Quantity" asp-for="Quantity" type="number" min="1"/>
                         </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Add</button>

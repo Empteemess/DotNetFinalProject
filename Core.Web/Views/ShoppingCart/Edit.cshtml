@@ -60,9 +60,6 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="AboutUs" asp-action="Index">About Us</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
-                </li>
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
@@ -111,7 +108,7 @@
                        <p>@Model.Description</p>
                        <span>@Model.Quantity left on stock</span>
                        <p>Quantity : @Model.SellQuantity</p>
-                       <input class="text" value="@Model.SellQuantity" asp-for="SellQuantity" type="number" min="1" max="@Model.Quantity"/>
+                       <input class="text" value="@Model.SellQuantity" asp-for="SellQuantity" type="number" min="1" max="@(@Model.Quantity + @Model.SellQuantity)"/>
                        <button class="btn" type="submit">Save</button>
                    </div>
                </div>

@@ -7,6 +7,7 @@ https://www.tooplate.com/view/2114-pixie
 */
 
 body {
+  position: relative;
   font-family: "Roboto", sans-serif;
   transition: all 0.5s;
 }
@@ -407,13 +408,23 @@ a {
   -o-transition-property: top, left, opacity;
   transition-property: transform, opacity;
 }
+.page-navigation{
+  position: relative;
+}
+.cart-page-navigation li{
+   position: absolute;
+  bottom: 5px;
+  left: 45%;
+  transform: translate(0,55%);
+}
 
 .page-navigation ul {
   text-align: center;
   border-top: 1px solid #eee;
   padding: 30px 0px 0px 0px;
-  margin: 0px 0px 80px 0px;
+  margin: 0;
 }
+
 .page-navigation ul li {
   display: inline-block;
 }
@@ -684,6 +695,137 @@ a {
   border: none;
 }
 
+/* product/ card styles */
+.cart-container-fluid{
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  z-index: 999;
+  max-width: 60%;
+}
+.close-btn, .close-btn button{
+  padding: 5px;
+  width: 30px;
+  border:none;
+  border-radius: 50%;
+  font-weight: bold;
+}
+.close-btn button:hover{
+  background-color: rgba(193, 193, 193, 0.48);
+}
+.card-container {
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  gap: 20px;
+  box-shadow: 1px -1px 14px 2px rgba(0, 0, 0, 0.66);
+  padding: 50px 30px;
+  
+}
+.btn-secondary,.btn-primary{
+  border: none;
+  background-color: rgba(12, 85, 193, 0.89);
+}.btn-secondary:hover,.btn-primary:hover{
+  background-color: rgba(18, 114, 253, 0.71);
+}
+ .admin-text{
+   border: 1px solid rgba(34, 107, 183, 0.87);
+ }
+.text-right{
+  position: absolute;
+  bottom: -10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  gap: 10px;
+  max-width: 100%;
+}
+.product-position{
+
+  flex-wrap: wrap;
+  display: flex;
+  max-width: 100%;
+  gap: 5px;
+  flex: 1;
+  
+}
+.product-styles{
+  max-width: 45%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.card-logos {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.card-logos img {
+  max-width: 60px;
+}
+.card-info {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 15px;
+}
+input {
+  border: 1px solid rgba(255, 255, 255, 0.466);
+  border-radius: 10px;
+  background: none;
+}
+.card-num input,
+.card-num label {
+  max-width: 80%;
+  font-size: 20px;
+}
+.card-hold {
+  max-width: 80%;
+}
+.card-hold input {
+  font-size: 20px;
+}
+.exp-date {
+  font-size: 20px;
+  max-width: 80px;
+}
+.exp-date input {
+  font-size: 20px;
+}
+.ccv-code {
+  font-size: 20px;
+  max-width: 50px;
+}
+.ccv-code input {
+  font-size: 20px;
+}
+.card-hold,
+.exp-date,
+.ccv-code,
+.card-num {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.apply-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.662);
+
+  border-radius: 20px;
+  padding: 5px;
+  font-size: 16px;
+  width: 50%;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.apply-btn:hover {
+  background-color: rgba(255, 255, 255, 0.662);
+}
 /* Responsive Style */
 @media (max-width: 991px) {
   .banner {

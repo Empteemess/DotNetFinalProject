@@ -29,7 +29,7 @@ public class AccountController : Controller
             var result = await _service.LoginAsync(model);
             if (result)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -45,12 +45,13 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if (ModelState.IsValid)
+        var emailCheck = await _service.CheckEmail(model.Email);
+        if (ModelState.IsValid && !emailCheck)
         {
             var success = await _service.RegisterAsync(model);
             if (success)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction(nameof(Login));
             }
         }
 
@@ -59,7 +60,35 @@ public class AccountController : Controller
 
     public async Task<IActionResult> LogOut()
     {
-       _service.LogOutAsync();
-       return RedirectToAction("Index", "Home");
+        _service.LogOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
+
+    public async Task<IActionResult> EmailCheck(string email)
+    {
+        var check = await _service.CheckUserAsync(email);
+        return RedirectToAction(nameof(RecoverPassword), new { email = email, check = check });
+    }
+
+    [HttpGet]
+    public IActionResult RecoverPassword(string email = "", bool check = false)
+    {
+        var model = new RecoveryPasswordViewModel();
+        model.EmailCheck = check;
+        model.Email = email;
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RecoverPassword(RecoveryPasswordViewModel model, bool check = false)
+    {
+        var update = await _service.PasswordUpdate(model.Email, model.Password);
+        if (update)
+        {
+            model.EmailCheck = check;
+            return RedirectToAction(nameof(Login));
+        }
+
+        return View(model);
     }
 }

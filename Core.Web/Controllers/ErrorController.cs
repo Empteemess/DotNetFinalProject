@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FinalProject.Controllers;
 
-public class ContactController : Controller
+public class ErrorController : Controller
 {
-    // GET
     public IActionResult Index()
     {
         return View();

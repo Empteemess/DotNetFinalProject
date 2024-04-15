@@ -13,7 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="MailKit" Version="4.4.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+        <PackageReference Include="MimeKit" Version="4.4.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,6 +46,7 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib2\bootstrap\js\bootstrap.min.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib2\bootstrap\js\bootstrap.min.js.map" />
       <_ContentIncludedByDefault Remove="Pages\ShoppingCart\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Contact\Index.cshtml" />
     </ItemGroup>
 
 </Project>

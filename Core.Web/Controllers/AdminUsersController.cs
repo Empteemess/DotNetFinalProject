@@ -19,10 +19,10 @@ public class AdminUsersController : Controller
     public async Task<IActionResult> Index(string email, string filterName, int currentPage = 1, int maxItem = 6)
     {
         var count = _service.Count();
-        var users = await _service.FilterByInput(currentPage,maxItem,email, filterName);
+        var users = await _service.FilterByInput(currentPage, maxItem, email, filterName);
 
         ViewBag.RoleList = _service.GetRoles();
-        
+
         ViewBag.currentPage = currentPage;
         ViewBag.PageNum = (int)Math.Ceiling(count / (double)maxItem);
         return View(users);
@@ -64,5 +64,17 @@ public class AdminUsersController : Controller
     {
         await _service.DeleteRole(role);
         return RedirectToAction(nameof(Edit));
+    }
+
+    public async Task<IActionResult> DeleteUser(string email)
+    {
+        var deleteUser = await _service.DeleteUserByEmail(email);
+        
+        if (deleteUser)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return RedirectToAction("Index", "Error");
     }
 }

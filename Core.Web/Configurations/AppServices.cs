@@ -18,11 +18,12 @@ public static class AppServices
         serviceCollection.AddScoped<ISingleProductRepository<Product>, SingleProductRepository>();
         serviceCollection.AddScoped<ISingleProductService, SingleProductService>();
 
-        serviceCollection.AddScoped<IShoppingService, ShoppingCartService>();
+        serviceCollection.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+        serviceCollection.AddScoped<IShoppingCartService, ShoppingCartService>();
 
         serviceCollection.AddScoped<IAccountService, AccountService>();
 
-        serviceCollection.AddScoped<IAdminProductsRepository<Product>, AdminProductsProductsRepository>();
+        serviceCollection.AddScoped<IAdminProductsRepository<Product>, AdminProductsRepository>();
         serviceCollection.AddScoped<IAdminProductsService, AdminProductsService>();
         
         serviceCollection.AddScoped<IProductRepository<Product>, ProductRepository>();
@@ -32,6 +33,7 @@ public static class AppServices
         
 
         serviceCollection.AddTransient<DependencyConfiguration>();
+        
         serviceCollection.AddTransient<AccountService>();
     }
 
